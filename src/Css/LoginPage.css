@@ -1,0 +1,25 @@
+.PolariodImageStyle {
+  width: 85%;
+  height: 85%;
+  object-fit: cover;
+}
+.PolariodImageHolder {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(15%, 1fr)
+  ); /* Increase min size */
+  justify-items: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  gap: 10px;
+}
+
+.PolariodBox {
+  background-color: #cdcbb5;
+  height: 16vw;
+  width: 14vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 3vw;
+}
