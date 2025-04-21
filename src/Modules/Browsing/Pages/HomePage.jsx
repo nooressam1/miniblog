@@ -1,8 +1,9 @@
 import React from 'react'
+import QuickPost from '../../Shared/Components/QuickPost'
 
 const HomePage = () => {
   return (
-    <div>HomePage</div>
+    <div><QuickPost></QuickPost></div>
   )
 }
 
