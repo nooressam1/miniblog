@@ -7,11 +7,11 @@ const QuickPost = () => {
   return (
     <div
       className={`w-full ${
-        focusState ? "h-40" : "h-16"
+        focusState ? "h-40" : "h-14"
       } transition-all duration-300 flex justify-center items-start`}
     >
       <div
-        className={`bg-[#20284E] w-[95%] h-full transition-all duration-300 p-4 rounded-md flex ${
+        className={`bg-[#20284E] w-[95%] h-full transition-all duration-300 p-2 rounded-md flex ${
           focusState ? "flex-col items-start" : "flex-row items-center"
         } justify-between gap-3`}
       >
