@@ -7,7 +7,7 @@ const Navbar = () => {
     <div className="w-full h-24 pl-8 pr-5 p-2">
       <div className="flex w-full h-full justify-between items-center">
         <h1 className="text-[#CFD9FC] font-bold text-2xl">EmberPages</h1>
-        <div className="grid h-full  grid-cols-[50px_1fr]  justify-center items-center">
+        <div className="grid h-full  grid-cols-[50px_1fr] justify-center items-center">
           <div className="h-2/5 w-2/3">
             <button className="bg-[#B36ABE] rounded-md  flex w-full h-full text-center justify-center items-center">
               <IconSearch color="white" stroke={2} />
