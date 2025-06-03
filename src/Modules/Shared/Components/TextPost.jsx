@@ -20,12 +20,12 @@ const TextPost = ({ userName, captionText, profilePicture, postType,postPhoto })
         <div className={`bg-[#7E96F6] items-center gap-2  p-3  ${ postType === "Photo" ? "rounded-none": "rounded-t-md" }  flex`}>
           <div className="h-10 w-10">
             <img
-              className="rounded-3xl h-full w-full object-cover"
+              className="rounded-3xl cursor-pointer h-full w-full object-cover"
               src={profilePicture } // remove photopost and just add the image here and check if its a photo or text kind of post
               alt="Pfp"
             />
           </div>
-          <h1 className="text-[#E4EAFF]">{userName}</h1>
+          <h1 className="text-[#E4EAFF] cursor-pointer">{userName}</h1>
         </div>
         <div className="p-4">
           <h1 className="text-[#CFD9FC] ">{captionText} </h1>

@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import QuickPost from "../../Shared/Components/QuickPost";
 import FilterButton from "../../Shared/Components/FilterButton";
 import TextPost from "../../Shared/Components/TextPost";
-import PfpExample from "../../Shared/Images/PfpExample.jpg";
 import Masonry from "react-masonry-css";
-import {getMockPosts} from "../../Shared/Utilities/MockData";
+import { getMockPosts } from "../../Shared/Utilities/MockData";
+import { useSearchParams } from "react-router-dom";
 
-const posts = getMockPosts();
+const mockposts = getMockPosts();
 const breakpointColumnsObj = {
   default: 3,
   1100: 2,
@@ -14,11 +14,42 @@ const breakpointColumnsObj = {
 };
 
 const HomePage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filter = searchParams.get("filter");
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    if (!filter) {
+      setSearchParams({ filter: "Newest" });// this changes the actual url
+    }
+  }, [filter, setSearchParams]);
+
+  useEffect(() => {
+    let filteredPosts = [...mockposts];
+
+    if (filter === "Newest") {
+      filteredPosts = filteredPosts.filter((post) => post.postType === "Photo");
+    } else if (filter === "Trending") {
+      filteredPosts = filteredPosts.sort((a, b) => b.likes - a.likes); 
+    } else if (filter === "Following") {
+      filteredPosts = filteredPosts.filter((post) => post.isFromFollowing); 
+    }
+
+    setPosts(filteredPosts);
+  }, [filter]);
+
   return (
-    <div className="flex flex-col justify-center  ">
-      <div className="flex justify-center items-start ">
-        <QuickPost></QuickPost>
-        <FilterButton></FilterButton>
+    <div className="flex flex-col justify-center">
+      <div className="flex justify-center items-start">
+        <QuickPost />
+        <FilterButton
+          currentFilter={filter}
+          onChange={(newFilter) => {
+            const params = new URLSearchParams(searchParams);
+            params.set("filter", newFilter);
+            setSearchParams(params);
+          }}
+        />
       </div>
       <Masonry
         breakpointCols={breakpointColumnsObj}
@@ -35,12 +66,6 @@ const HomePage = () => {
             postPhoto={post.photoUrl}
           />
         ))}
-        <TextPost
-          userName="Username"
-          captionText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla varius ante nulla, vel luctus nunc tincidunt in"
-          profilePicture={PfpExample}
-          postType="Photo"
-        ></TextPost>
       </Masonry>
     </div>
   );
