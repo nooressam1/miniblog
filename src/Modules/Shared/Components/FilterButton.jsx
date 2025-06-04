@@ -12,12 +12,12 @@ const FilterButton = ({currentFilter,onChange }) => {
   };
 
   return (
-    <div className="w-1/6 h-auto relative">
+    <div className=" w-1/12  md:w-1/5 h-auto relative">
       <button
-        className="rounded-md w-[90%] gap-1 h-14 bg-[#A30BA8] flex justify-center items-center"
+        className="rounded-md w-[90%] md:w-[90%]  h-14 bg-[#A30BA8] flex justify-center items-center"
         onClick={() => setOpenFilter(!openFilter)}
       >
-        <h1 className="text-white font-medium">{currentFilter}</h1>
+        <h1 className="text-white hidden md:block font-medium text-sm md:text-base ">{currentFilter}</h1>
         {openFilter ? (
           <IconChevronUp color="white" stroke={2} />
         ) : (
@@ -26,7 +26,7 @@ const FilterButton = ({currentFilter,onChange }) => {
       </button>
 
       <div
-        className={`absolute top-full mt-1 w-[90%] bg-[#A30BA8] rounded-md   shadow-md z-10  transition-all duration-300 ease-in-out ${
+        className={`absolute right-2 md:right-6 top-full mt-1 w-24 md:w-[90%] bg-[#A30BA8] rounded-md   shadow-md z-10  transition-all duration-300 ease-in-out ${
           openFilter ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
