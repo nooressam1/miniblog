@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import AuthoPage from "./Modules/Auth/Pages/AuthoPage";
 import HomePage from "./Modules/Browsing/Pages/HomePage";
 import Navbar from "./Modules/Shared/Components/Navbar";
+import PostScreen from "./Modules/Browsing/Pages/PostScreen";
 // import SignUpPage from "./Pages/SignUpPage"; // Ensure this component exists
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
 
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/post" element={<PostScreen />} />
         </Route>
 
         {/* <Route path="/signup" element={<SignUpPage />} /> */}
@@ -25,7 +27,7 @@ function MainLayout() {
   return (
     <>
       <Navbar />
-      <Outlet/>
+      <Outlet />
     </>
   );
 }
