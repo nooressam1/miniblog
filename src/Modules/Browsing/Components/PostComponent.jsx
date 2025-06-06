@@ -5,7 +5,7 @@ import PfpExample from "../../Shared/Images/PfpExample.jpg";
 import Saved from "../../Shared/Images/Saved.png";
 import Unsaved from "../../Shared/Images/Unsaved.png";
 import testphoto from "../../Auth/Images/TestPhoto.jpg";
-
+import { IconMessage2 } from "@tabler/icons-react";
 const PostComponent = ({
   userName,
   captionText,
@@ -17,8 +17,8 @@ const PostComponent = ({
   const [savePost, setSavePost] = useState(false);
 
   return (
-    <div className="flex justify-center w-full h-[80%]">
-      <div className="h-full w-[45%]">
+    <div className="flex justify-center w-[75%] h-[80%]">
+      <div className="h-full w-[55%]">
         <img
           src={testphoto}
           alt="postImage"
@@ -26,7 +26,7 @@ const PostComponent = ({
         />
       </div>
 
-      <div className="bg-[#20284E] w-1/3 rounded-tr-md rounded-br-md flex flex-col">
+      <div className="bg-[#20284E] w-[40%] rounded-tr-md rounded-br-md flex flex-col">
         <div
           className={`bg-[#7E96F6] items-center gap-2 p-3 ${
             postType === "Photo" ? "rounded-none" : "rounded-tr-md"
@@ -88,6 +88,12 @@ const PostComponent = ({
                   />
                 </button>
               )}
+              <button
+                onClick={() => setSavePost(!savePost)}
+                className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
+              >
+                <IconMessage2 stroke={2} color="white" />
+              </button>
             </div>
           </div>
         </div>
