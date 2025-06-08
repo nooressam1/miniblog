@@ -35,6 +35,7 @@ p-2 rounded-md leading-tight"
           <button className="bg-[#B36ABE] p-2 rounded-md flex justify-center items-center">
             <IconSend2 color="white" stroke={2} />
           </button>
+       
         </div>
       </div>
     </div>

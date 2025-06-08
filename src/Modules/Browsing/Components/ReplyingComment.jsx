@@ -27,7 +27,7 @@ const ReplyingComment = ({
     }
   };
   return (
-    <div className="bg-[#20284E] ml-8  items-center w-[71.5%] justify-between  rounded-md flex p-3 ">
+    <div className="bg-[#20284E]   items-center w-full justify-between  rounded-md flex p-3 ">
       <div className=" gap-2 items-center w-full ">
         <h1 className="text-[#8194D4] text-sm cursor-pointer  capitalize ">
           Replied to @{userName}

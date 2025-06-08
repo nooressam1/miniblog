@@ -12,11 +12,12 @@ const Comments = ({
   profilePicture,
   postType,
   postPhoto,
+  commentAction,
 }) => {
   const [likePost, setLikePost] = useState(false);
   const [savePost, setSavePost] = useState(false);
   return (
-    <div className="bg-[#20284E] ml-8  items-center w-[71.5%] justify-between  rounded-md flex p-3 ">
+    <div className="bg-[#20284E]   items-center w-full justify-between  rounded-md flex p-3 ">
       <div className="flex gap-2 items-center">
         <div className="h-10 w-10">
           <img
@@ -25,9 +26,10 @@ const Comments = ({
             alt="Pfp"
           />
         </div>
-        <h1 className="text-[#E4EAFF] cursor-pointer font-bold capitalize ">{userName}</h1>
-              <h1 className="text-[#CFD9FC]">{captionText}</h1>
-
+        <h1 className="text-[#E4EAFF] cursor-pointer font-bold capitalize ">
+          {userName}
+        </h1>
+        <h1 className="text-[#CFD9FC]">{captionText}</h1>
       </div>
 
       {/* Main content area with flex-grow */}
@@ -52,7 +54,7 @@ const Comments = ({
             )}
 
             <button
-              onClick={() => setSavePost(!savePost)}
+              onClick={() => commentAction(userName)} // ✅ Now it's only called on click
               className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
             >
               <IconMessage2 stroke={2} color="white" />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IconHeart } from "@tabler/icons-react";
+import { IconHeart, IconMessage2 } from "@tabler/icons-react";
 import { IconHeartFilled } from "@tabler/icons-react";
 import PfpExample from "../../Shared/Images/PfpExample.jpg";
 import Saved from "../Images/Saved.png";
@@ -17,7 +17,7 @@ const TextPost = ({
 
   return (
     <div>
-      <div className="bg-[#20284E]   rounded-md">
+      <div className="bg-[#20284E]   rounded-md" >
         {postType === "Photo" && (
           <div className="h-1/3 w-full ">
             <img
@@ -47,14 +47,14 @@ const TextPost = ({
             {likePost ? (
               <button
                 onClick={() => setLikePost(!likePost)}
-                className="bg-[#B36ABE] rounded-xl p-1 flex w-[10%] h-full text-center justify-center items-center"
+                className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-[10%] h-full text-center justify-center items-center"
               >
                 <IconHeartFilled color="white" />
               </button>
             ) : (
               <button
                 onClick={() => setLikePost(!likePost)}
-                className="bg-[#B36ABE] rounded-xl p-1 flex w-[10%] h-full text-center justify-center items-center"
+                className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-[10%] h-full text-center justify-center items-center"
               >
                 <IconHeart stroke={2} color="white" />
               </button>
@@ -62,7 +62,7 @@ const TextPost = ({
             {savePost ? (
               <button
                 onClick={() => setSavePost(!savePost)}
-                className="bg-[#B36ABE] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
+                className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
               >
                 <img
                   src={Saved}
@@ -73,7 +73,7 @@ const TextPost = ({
             ) : (
               <button
                 onClick={() => setSavePost(!savePost)}
-                className="bg-[#B36ABE] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
+                className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
               >
                 <img
                   src={Unsaved}
@@ -82,6 +82,12 @@ const TextPost = ({
                 />
               </button>
             )}
+               <button
+                // onClick={commentAction}
+                className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
+              >
+                <IconMessage2 stroke={2} color="white" />
+              </button>
           </div>
         </div>
       </div>

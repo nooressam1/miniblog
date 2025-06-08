@@ -6,30 +6,30 @@ import Saved from "../../Shared/Images/Saved.png";
 import Unsaved from "../../Shared/Images/Unsaved.png";
 import testphoto from "../../Auth/Images/TestPhoto.jpg";
 import { IconMessage2 } from "@tabler/icons-react";
+import ImageCarousel from "./ImageCarousel";
 const PostComponent = ({
   userName,
   captionText,
   profilePicture,
   postType,
   postPhoto,
+  commentAction,
 }) => {
   const [likePost, setLikePost] = useState(false);
   const [savePost, setSavePost] = useState(false);
 
   return (
-    <div className="flex justify-center w-[75%] h-[80%]">
-      <div className="h-full w-[55%]">
-        <img
-          src={testphoto}
-          alt="postImage"
-          className="rounded-tl-md rounded-bl-md h-full w-full object-cover"
-        />
-      </div>
+      <div className="flex flex-col md:flex-row justify-center items-center w-full h-fit md:h-[550px]">
+      <ImageCarousel></ImageCarousel>
 
-      <div className="bg-[#20284E] w-[40%] rounded-tr-md rounded-br-md flex flex-col">
+      <div
+        className={`bg-[#20284E] md:w-[35%] w-[450px] h-full flex flex-col ${
+          postType === "Photo" ? "rounded-md" : "rounded-b-md md:rounded-r-md md:rounded-l-none"
+        }`}
+      >
         <div
           className={`bg-[#7E96F6] items-center gap-2 p-3 ${
-            postType === "Photo" ? "rounded-none" : "rounded-tr-md"
+            postType === "Photo" ? "rounded-t-md" : " rounded-none md:rounded-tr-md"
           } flex`}
         >
           <div className="h-10 w-10">
@@ -52,14 +52,14 @@ const PostComponent = ({
               {likePost ? (
                 <button
                   onClick={() => setLikePost(!likePost)}
-                  className="bg-[#B36ABE] rounded-xl p-1 flex w-[10%] h-full text-center justify-center items-center"
+                  className="bg-[#B36ABE]  hover:bg-[#da85e7] rounded-xl p-1 flex w-fit h-full text-center justify-center items-center"
                 >
                   <IconHeartFilled color="white" />
                 </button>
               ) : (
                 <button
                   onClick={() => setLikePost(!likePost)}
-                  className="bg-[#B36ABE] rounded-xl p-1 flex w-[10%] h-full text-center justify-center items-center"
+                  className="bg-[#B36ABE]  hover:bg-[#da85e7] rounded-xl p-1 flex w-fit h-full text-center justify-center items-center"
                 >
                   <IconHeart stroke={2} color="white" />
                 </button>
@@ -68,7 +68,7 @@ const PostComponent = ({
               {savePost ? (
                 <button
                   onClick={() => setSavePost(!savePost)}
-                  className="bg-[#B36ABE] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
+                  className="bg-[#B36ABE]  hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
                 >
                   <img
                     src={Saved}
@@ -79,7 +79,7 @@ const PostComponent = ({
               ) : (
                 <button
                   onClick={() => setSavePost(!savePost)}
-                  className="bg-[#B36ABE] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
+                  className="bg-[#B36ABE]  hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
                 >
                   <img
                     src={Unsaved}
@@ -89,7 +89,7 @@ const PostComponent = ({
                 </button>
               )}
               <button
-                onClick={() => setSavePost(!savePost)}
+                onClick={commentAction}
                 className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
               >
                 <IconMessage2 stroke={2} color="white" />
