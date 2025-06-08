@@ -19,17 +19,25 @@ const PostComponent = ({
   const [savePost, setSavePost] = useState(false);
 
   return (
-      <div className="flex flex-col md:flex-row justify-center items-center w-full h-fit md:h-[550px]">
-      <ImageCarousel></ImageCarousel>
+    <div className={`flex flex-col md:flex-row justify-center items-center w-full ${
+          postType === "Photo"
+            ? "  h-fit md:h-[550px]"
+            : " h-fit "
+        } `}>
+      {postType === "Photo" && <ImageCarousel></ImageCarousel>}
 
       <div
-        className={`bg-[#20284E] md:w-[35%] w-[450px] h-full flex flex-col ${
-          postType === "Photo" ? "rounded-md" : "rounded-b-md md:rounded-r-md md:rounded-l-none"
+        className={`bg-[#20284E]   flex flex-col ${
+          postType === "Photo"
+            ? "rounded-b-md md:rounded-r-md h-full  md:rounded-l-none w-[450px] md:w-[35%] "
+            : "rounded-md w-[100%] h-fit "
         }`}
       >
         <div
           className={`bg-[#7E96F6] items-center gap-2 p-3 ${
-            postType === "Photo" ? "rounded-t-md" : " rounded-none md:rounded-tr-md"
+            postType === "Photo"
+              ? " rounded-none md:rounded-tr-md"
+              : "rounded-t-md"
           } flex`}
         >
           <div className="h-10 w-10">
