@@ -14,9 +14,9 @@ const Account = () => {
         />
       </div>{" "}
       {/*banners*/}
-      <div className=" w-full h-[15vh] md:h-[23vh] bg-[#20284E] flex flex-col items-center ">
-        <div className="w-[85%] h-full flex">
-          <div className="w-56 h-60 rounded-lg -mt-24 ">
+      <div className=" w-full min-h-[23vh] max-h-[28vh]  bg-[#20284E] flex  items-center ">
+        <div className=" w-full p-5 h-full flex flex-col md:flex-row   ">
+          <div className=" w-40 h-52 md:w-56 md:h-60 rounded-lg md:-mt-24 -mt-40 ">
             <img
               className="w-full h-full object-cover rounded-2xl object-center"
               alt="pfp"
@@ -26,10 +26,10 @@ const Account = () => {
           {/*profilepicture*/}
 
           <div className="w-full h-fit flex flex-col gap-4 p-4 ">
-            <div className="flex  w-full items-center justify-between">
+            <div className="flex md:flex-row flex-col  w-full md:items-center justify-between">
               <div className="text-white text-3xl font-medium">Username</div>
-              <div className=" flex justify-center gap-4 items-center ">
-                <h1 className="text-white text-md font-sm w-fit whitespace-nowrap  ">
+              <div className=" flex md:justify-center gap-4 items-center ">
+                <h1 className="text-white text-md font-sm w-fit whitespace-nowrap   ">
                   0 Followers
                 </h1>
                 <h1 className="text-white text-md font-sm whitespace-nowrap">
@@ -47,7 +47,7 @@ const Account = () => {
 
               {/* following, followering and follow button*/}
             </div>
-            <h1 className="text-white text-md font-sm w-[50%]">
+            <h1 className="text-white text-md font-sm whitespace-nowrap overflow-hidden">
               Description  DescriptionDescriptionDescriptionDescription Description
             </h1>
           </div>
