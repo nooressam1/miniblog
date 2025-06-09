@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const PostFilter = () => {
+const PostFilter = ({ setFilterOption }) => {
   const [filterChoice, setFilterChoice] = useState("All");
-
+  useEffect(() => {
+    setFilterOption(filterChoice);
+  }, [filterChoice]);
   return (
     <div className="w-[95%] flex flex-col gap-3">
       <div className="flex  space-x-3">

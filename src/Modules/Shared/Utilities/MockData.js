@@ -24,7 +24,7 @@ const mockPosts = [
     },
     {
       id: 4,
-      userName: "Emily Rodriguez",
+      userName: "David Kim",
       profilePicture: "https://randomuser.me/api/portraits/women/63.jpg",
       captionText: "Just published my latest article on React hooks. Check it out if you're interested in frontend development!",
       postType: "Text"

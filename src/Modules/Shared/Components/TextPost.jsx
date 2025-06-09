@@ -17,7 +17,7 @@ const TextPost = ({
 
   return (
     <div>
-      <div className="bg-[#20284E]   rounded-md" >
+      <div className="bg-[#20284E]   rounded-md"  >
         {postType === "Photo" && (
           <div className="h-1/3 w-full ">
             <img
