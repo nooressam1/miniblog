@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import BannerTest from "../Images/BannerTest.webp";
+import QuickPost from "../../Shared/Components/QuickPost";
+import PostFilter from "../Components/PostFilter";
 const Account = () => {
   const [followingAccount, setFollowingAccount] = useState(false);
   return (
-    <div className="h-screen w-full">
+    <div className="h-screen w-full justify-center items-center flex flex-col">
       <div className="w-full h-[40vh] md:h-[50vh]">
         <img
           className="w-full h-full object-cover"
@@ -52,6 +54,10 @@ const Account = () => {
             </h1>
           </div>
         </div>
+      </div>
+      <div className="w-full flex flex-col mt-3 gap-4 items-center ">
+      <QuickPost></QuickPost>
+      <PostFilter></PostFilter>
       </div>
     </div>
   );
