@@ -24,7 +24,7 @@ const mockPosts = [
     },
     {
       id: 4,
-      userName: "David Kim",
+      userName: "Emily Rodriguez",
       profilePicture: "https://randomuser.me/api/portraits/women/63.jpg",
       captionText: "Just published my latest article on React hooks. Check it out if you're interested in frontend development!",
       postType: "Text"
@@ -38,6 +38,47 @@ const mockPosts = [
       photoUrl: "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&auto=format&fit=crop" // Friends at beach
     }
   ];
+  export const mockUsers = [
+  {
+    userName: "Alex Johnson",
+    profilePicture: "https://randomuser.me/api/portraits/men/32.jpg",
+    description: "Hiker, photographer, and nature lover.",
+    followers: 102,
+    following: 180,
+  },
+  {
+    userName: "Sarah Williams",
+    profilePicture: "https://randomuser.me/api/portraits/women/44.jpg",
+    description: "Frontend dev and cat enthusiast.",
+    followers: 250,
+    following: 305,
+  },
+  {
+    userName: "Michael Chen",
+    profilePicture: "https://randomuser.me/api/portraits/men/75.jpg",
+    description: "Coffee, code, repeat.",
+    followers: 190,
+    following: 220,
+  },
+  {
+    userName: "Emily Rodriguez",
+    profilePicture: "https://randomuser.me/api/portraits/women/63.jpg",
+    description: "Writer and React developer.",
+    followers: 340,
+    following: 289,
+  },
+  {
+    userName: "David Kim",
+    profilePicture: "https://randomuser.me/api/portraits/men/81.jpg",
+    description: "Weekend adventurer and UX/UI designer.",
+    followers: 410,
+    following: 380,
+  },
+];
+
   export function getMockPosts() {
     return mockPosts;
+  }
+    export function getMockUsers() {
+    return mockUsers;
   }

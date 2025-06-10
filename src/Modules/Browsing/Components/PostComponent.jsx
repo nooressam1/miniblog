@@ -7,6 +7,7 @@ import Unsaved from "../../Shared/Images/Unsaved.png";
 import testphoto from "../../Auth/Images/TestPhoto.jpg";
 import { IconMessage2 } from "@tabler/icons-react";
 import ImageCarousel from "./ImageCarousel";
+import { Link } from "react-router-dom";
 const PostComponent = ({
   userName,
   captionText,
@@ -19,11 +20,11 @@ const PostComponent = ({
   const [savePost, setSavePost] = useState(false);
 
   return (
-    <div className={`flex flex-col md:flex-row justify-center items-center w-full ${
-          postType === "Photo"
-            ? "  h-fit md:h-[550px]"
-            : " h-fit "
-        } `}>
+    <div
+      className={`flex flex-col md:flex-row justify-center items-center w-full ${
+        postType === "Photo" ? "  h-fit md:h-[550px]" : " h-fit "
+      } `}
+    >
       {postType === "Photo" && <ImageCarousel></ImageCarousel>}
 
       <div
@@ -47,7 +48,9 @@ const PostComponent = ({
               alt="Pfp"
             />
           </div>
-          <h1 className="text-[#E4EAFF] cursor-pointer">{userName}</h1>
+          <Link to="/profile/DavidKim">
+            <h1 className="text-[#E4EAFF] cursor-pointer">{userName}</h1>
+          </Link>
         </div>
 
         {/* Main content area with flex-grow */}

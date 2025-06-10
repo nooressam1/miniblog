@@ -4,6 +4,7 @@ import { IconHeartFilled } from "@tabler/icons-react";
 import PfpExample from "../../Shared/Images/PfpExample.jpg";
 import Saved from "../Images/Saved.png";
 import Unsaved from "../Images/Unsaved.png";
+import { Link } from "react-router-dom";
 
 const TextPost = ({
   userName,
@@ -39,8 +40,9 @@ const TextPost = ({
               alt="Pfp"
             />
           </div>
-          <h1 className="text-[#E4EAFF] cursor-pointer">{userName}</h1>
-        </div>
+<Link to="/profile/David Kim">
+            <h1 className="text-[#E4EAFF] cursor-pointer">{userName}</h1>
+          </Link>        </div>
         <div className="p-4">
           <h1 className="text-[#CFD9FC] ">{captionText} </h1>
           <div className="flex gap-2 justify-end ">

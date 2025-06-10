@@ -17,7 +17,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/post" element={<PostScreen />} />
-          <Route path="/Account" element={<Account />} />
+          <Route path="/profile/:username" element={<Account />} />
         </Route>
 
       </Routes>
