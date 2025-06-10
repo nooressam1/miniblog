@@ -25,19 +25,23 @@ const Account = ({ UserName }) => {
   const { username } = useParams();
   const decodedUsername = decodeURIComponent(username); // decode %20 into space
 
- useEffect(() => {
-  console.log("Decoded username from URL:", decodedUsername);
-  console.log("Available usernames in mockUsers:", mockUsers.map(u => u.userName));
+  useEffect(() => {
+    console.log("Decoded username from URL:", decodedUsername);
+    console.log(
+      "Available usernames in mockUsers:",
+      mockUsers.map((u) => u.userName)
+    );
 
-  const userInfo = mockUsers.find((u) => u.userName === decodedUsername);
-  setUserInfo(userInfo);
-  console.log("Matched user info:", userInfo);
-}, [decodedUsername]);
-
+    const userInfo = mockUsers.find((u) => u.userName === decodedUsername);
+    setUserInfo(userInfo);
+    console.log("Matched user info:", userInfo);
+  }, [decodedUsername]);
 
   useEffect(() => {
     let filteredPosts = [...mockposts];
-    filteredPosts = filteredPosts.filter((post) => post.userName === decodedUsername);
+    filteredPosts = filteredPosts.filter(
+      (post) => post.userName === decodedUsername
+    );
 
     if (filterChoice === "Images") {
       filteredPosts = filteredPosts.filter((post) => post.postType === "Photo");
@@ -77,8 +81,11 @@ const Account = ({ UserName }) => {
               </div>
               <div className="flex md:justify-center gap-4 items-center">
                 <h1 className="text-white text-md font-sm w-fit whitespace-nowrap">
-                  {userInfo.followers} Followers</h1>
-                <h1 className="text-white text-md font-sm whitespace-nowrap">{userInfo.following} Following</h1>
+                  {userInfo.followers} Followers
+                </h1>
+                <h1 className="text-white text-md font-sm whitespace-nowrap">
+                  {userInfo.following} Following
+                </h1>
                 <button
                   className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
                   onClick={() => setFollowingAccount(!followingAccount)}
@@ -99,6 +106,12 @@ const Account = ({ UserName }) => {
       <div className="w-full flex flex-col mt-3 gap-4 items-center">
         <QuickPost />
         <PostFilter setFilterOption={setFilterChoice} />
+        {posts < 1 && (
+          <h1 className="text-gray-600 ml-5 text-md font-sm ">
+            No Posts Available{" "}
+          </h1>
+        )}
+
         <Masonry
           breakpointCols={breakpointColumnsObj}
           className="flex w-full gap-8 p-8"

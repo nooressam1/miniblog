@@ -45,7 +45,7 @@ const PostFilter = ({ setFilterOption }) => {
           </h1>
         </button>
       </div>
-      <div className="w-full bg-[#7E96F6] h-[0.5px]"></div>
+      <div className="w-full bg-[#6074c6] h-[0.5px]"></div>
     </div>
   );
 };
