@@ -6,6 +6,7 @@ import { getMockPosts, getMockUsers } from "../../Shared/Utilities/MockData";
 import Masonry from "react-masonry-css";
 import TextPost from "../../Shared/Components/TextPost";
 import { useParams } from "react-router-dom";
+import EditInfo from "../Components/EditInfo";
 
 const mockposts = getMockPosts();
 const mockUsers = getMockUsers();
@@ -129,6 +130,7 @@ const Account = ({ UserName }) => {
           ))}
         </Masonry>
       </div>
+      <EditInfo></EditInfo>
     </div>
   );
 };
