@@ -5,7 +5,7 @@ const TextinputOuterDesign = ({ onChangeText, text, placeholder }) => {
     <div className="w-full ">
       <input
         type="text"
-        className="bg-transparent w-full p-2 border-white border-2 text-white rounded-md"
+        className="bg-transparent w-full p-3 border-white border-2 text-white rounded-md"
         onChangeText={onChangeText}
         value={text}
         placeholder={placeholder}

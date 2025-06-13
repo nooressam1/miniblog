@@ -2,20 +2,31 @@ import React, { useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import TextinputOuterDesign from "./TextinputOuterDesign";
 import BannerTest from "../Images/BannerTest.webp";
-
+import { IconPencil } from "@tabler/icons-react";
+import NullPfp from "../Images/nullpfp.jpg";
 const EditInfo = () => {
   const [changeAccount, setChangeAccount] = useState("Public");
-    const [image, setImage] = useState(null);
-const handleImageChange = (e) => {
+  const [image, setImage] = useState(NullPfp);
+    const [Banner, setBanner] = useState(NullPfp);
+
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImage(URL.createObjectURL(file)); // preview the image
     }
-  };
+  };  
+  const handleBannerChange = (e) =>{
+    const file = e.target.files[0];
+    if(file)
+    {
+      setBanner(URL.createObjectURL(file));
+    }
+  }
+
   return (
     <>
       <div></div>
-      <div className="w-1/2 h-fit p-4 ">
+      <div className="w-[60vw] h-fit p-4 ">
         <div className="flex justify-between">
           <h1 className="text-[#E3DDF7] font-medium text-2xl">
             Edit Information
@@ -50,7 +61,7 @@ const handleImageChange = (e) => {
             <div className="flex gap-4 ">
               <button
                 onClick={() => setChangeAccount("Public")}
-                className={` text-white  rounded-md h-12 w-full ${
+                className={` text-white whitespace-nowrap rounded-md p-3 w-full ${
                   changeAccount === "Public"
                     ? "  bg-[#A30BA8] border-none "
                     : "bg-transparent   border-white border-2  "
@@ -60,7 +71,7 @@ const handleImageChange = (e) => {
               </button>
               <button
                 onClick={() => setChangeAccount("Private")}
-                className={` text-white  rounded-md h-12 w-full ${
+                className={` text-white whitespace-nowrap p-3 rounded-md w-full ${
                   changeAccount === "Private"
                     ? "  bg-[#A30BA8] border-none "
                     : "bg-transparent   border-white border-2  "
@@ -71,7 +82,7 @@ const handleImageChange = (e) => {
             </div>
           </div>
           <div className="flex gap-5 w-full ">
-            <div>
+            <div className="relative">
               <h1 className="text-[#E3DDF7] font-medium text-lg pt-3 pb-3">
                 Profile Picture{" "}
               </h1>
@@ -81,20 +92,53 @@ const handleImageChange = (e) => {
                   alt="pfp"
                   src={image}
                 />
-              </div>
-                    <input type="file" accept="image/*" onChange={handleImageChange} />
 
+                <div className="absolute bottom-0 right-0">
+                  {/* Hidden file input */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="imageInput"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+
+                  {/* Label with image acting as the button */}
+                  <label htmlFor="imageInput" className="cursor-pointer ">
+                    <div className="p-3 w-fit rounded-full bg-[#7E96F6]">
+                      <IconPencil size={32} color="white" stroke={2} />
+                    </div>
+                  </label>
+                </div>
+              </div>
             </div>
             <div className="w-full">
               <h1 className="text-[#E3DDF7] font-medium text-lg pt-3 pb-3">
                 Banner
               </h1>
-              <div className="w-full h-52  md:h-60 rounded-lg">
+              <div className="w-full h-52 relative  md:h-60 rounded-lg">
                 <img
                   className="w-full h-full object-cover rounded-lg"
                   alt="Banner"
-                  src="https://i.pinimg.com/originals/c8/4f/b7/c84fb740471d58ba9597ace28969d490.gif"
+                  src={Banner}
                 />
+                <div className="absolute bottom-0 right-0">
+                  {/* Hidden file input */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="BannerimageInput"
+                    onChange={handleBannerChange}
+                    className="hidden"
+                  />
+
+                  {/* Label with image acting as the button */}
+                  <label htmlFor="BannerimageInput" className="cursor-pointer ">
+                    <div className="p-3 w-fit rounded-full bg-[#7E96F6]">
+                      <IconPencil size={32} color="white" stroke={2} />
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
