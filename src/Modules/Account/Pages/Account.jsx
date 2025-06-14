@@ -7,6 +7,7 @@ import Masonry from "react-masonry-css";
 import TextPost from "../../Shared/Components/TextPost";
 import { useParams } from "react-router-dom";
 import EditInfo from "../Components/EditInfo";
+import ProfileButtons from "../../Browsing/Components/ProfileButtons";
 
 const mockposts = getMockPosts();
 const mockUsers = getMockUsers();
@@ -18,9 +19,13 @@ const breakpointColumnsObj = {
 };
 
 const Account = ({ UserName }) => {
+  const [userAuthenticated, setUserAuthenticated] = useState(true);
+  const [openEditInfo, setOpenEditInfo] = useState(false);
+
   const [followingAccount, setFollowingAccount] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [posts, setPosts] = useState([]);
+
   const [filterChoice, setFilterChoice] = useState("All");
 
   const { username } = useParams();
@@ -75,40 +80,15 @@ const Account = ({ UserName }) => {
             />
           </div>
 
-          <div className="w-full h-fit flex flex-col gap-4 p-4">
-            <div className="flex md:flex-row flex-col w-full md:items-center justify-between">
-              <div className="text-white text-3xl font-medium">
-                {userInfo.userName}
-              </div>
-              <div className="flex md:justify-center gap-4 items-center">
-                <h1 className="text-white text-md font-sm w-fit whitespace-nowrap">
-                  {userInfo.followers} Followers
-                </h1>
-                <h1 className="text-white text-md font-sm whitespace-nowrap">
-                  {userInfo.following} Following
-                </h1>
-                <button
-                  className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
-                  onClick={() => setFollowingAccount(!followingAccount)}
-                >
-                  <h1 className="text-white font-medium text-sm md:text-base">
-                    {followingAccount ? "Follow" : "Unfollow"}
-                  </h1>
-                </button>
-              </div>
-            </div>
-            <h1 className="text-white text-md font-sm whitespace-nowrap overflow-hidden">
-              {userInfo.description}
-            </h1>
-          </div>
+          <ProfileButtons setOpenEditInfo={setOpenEditInfo}  userInfo={userInfo} userAuthenticated={userAuthenticated}></ProfileButtons>
         </div>
       </div>
 
-      <div className="w-full flex flex-col mt-3 gap-4 items-center">
-        <QuickPost />
+      <div className="w-full flex flex-col mt-5  items-center">
+        {userAuthenticated && <QuickPost />}
         <PostFilter setFilterOption={setFilterChoice} />
         {posts < 1 && (
-          <h1 className="text-gray-600 ml-5 text-md font-sm ">
+          <h1 className="text-gray-600 ml-5 mt-4 text-md font-sm ">
             No Posts Available{" "}
           </h1>
         )}
@@ -130,7 +110,8 @@ const Account = ({ UserName }) => {
           ))}
         </Masonry>
       </div>
-      <EditInfo></EditInfo>
+               {openEditInfo && <EditInfo setOpenEditInfo={setOpenEditInfo}> </EditInfo>}
+
     </div>
   );
 };

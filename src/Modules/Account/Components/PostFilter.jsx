@@ -6,7 +6,7 @@ const PostFilter = ({ setFilterOption }) => {
     setFilterOption(filterChoice);
   }, [filterChoice]);
   return (
-    <div className="w-[95%] flex flex-col gap-3">
+    <div className="w-[95%] flex flex-col gap-3 mt-4">
       <div className="flex  space-x-3">
         <button
           className={`rounded-md  md:w-28 capitalize  p-2  flex justify-center items-center ${
