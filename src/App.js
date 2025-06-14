@@ -6,6 +6,7 @@ import HomePage from "./Modules/Browsing/Pages/HomePage";
 import Navbar from "./Modules/Shared/Components/Navbar";
 import PostScreen from "./Modules/Browsing/Pages/PostScreen";
 import Account from "./Modules/Account/Pages/Account";
+import ChatPage from "./Modules/Chat/Page/ChatPage";
 // import SignUpPage from "./Pages/SignUpPage"; // Ensure this component exists
 
 function App() {
@@ -18,8 +19,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/post" element={<PostScreen />} />
           <Route path="/profile/:username" element={<Account />} />
+          <Route path="/chat/:userId" element={<ChatPage />} />
         </Route>
-
       </Routes>
     </BrowserRouter>
   );
