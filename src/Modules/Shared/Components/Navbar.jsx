@@ -16,13 +16,15 @@ const Navbar = () => {
               <IconSearch color="white" stroke={2} />
             </button>
           </div>
-          <div className="flex gap-2 w-full h-full justify-between items-center">
-            <div className="flex w-full h-full justify-center items-center">
-              <IconUserCircle color="white" stroke={2} />
-            </div>
+          <Link to={"/profile/" + "David%20Kim"}>
+            <div className="flex gap-2 w-full h-full justify-between items-center">
+              <div className="flex w-full h-full justify-center items-center">
+                <IconUserCircle color="white" stroke={2} />
+              </div>
 
-            <h1 className="text-[#CFD9FC] font-thin text-xl">Username</h1>
-          </div>
+              <h1 className="text-[#CFD9FC] font-thin text-xl">Username</h1>
+            </div>
+          </Link>
         </div>
       </div>
     </div>
