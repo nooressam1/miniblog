@@ -80,28 +80,50 @@ const mockPosts = [
     following: 380,
   },
 ];
-export const mockMessages = {
-  alex123: [
-    { fromSelf: true, text: "Hey Alex, ready for the hike this weekend?", timestamp: "2025-06-13T10:01:00Z" },
-    { fromSelf: false, text: "Absolutely! Got my gear packed already.", timestamp: "2025-06-13T10:03:00Z" },
-  ],
-  sarah456: [
-    { fromSelf: true, text: "Loved your recent UI post!", timestamp: "2025-06-12T14:20:00Z" },
-    { fromSelf: false, text: "Aww thanks! That means a lot 🐱", timestamp: "2025-06-12T14:22:00Z" },
-  ],
-  michael789: [
-    { fromSelf: false, text: "How many cups of coffee today? 😄", timestamp: "2025-06-13T08:30:00Z" },
-    { fromSelf: true, text: "Only 3. I’m improving!", timestamp: "2025-06-13T08:31:00Z" },
-  ],
-  emily321: [
-    { fromSelf: true, text: "Hey Emily, want to collab on the blog project?", timestamp: "2025-06-11T17:00:00Z" },
-    { fromSelf: false, text: "Sure! React and writing? I’m in.", timestamp: "2025-06-11T17:02:00Z" },
-  ],
-  david654: [
-    { fromSelf: false, text: "Sent you the new UI mockups!", timestamp: "2025-06-10T09:10:00Z" },
-    { fromSelf: true, text: "Got them! Looks super clean 🔥", timestamp: "2025-06-10T09:12:00Z" },
-  ],
-};
+export const mockMessages = [
+  {
+    messageId: "msg1",
+    senderId: "alex123",
+    receiverId: "sarah456",
+    text: "Hey Sarah! How’s your latest frontend project going?",
+    timestamp: "2025-06-14T10:15:00Z",
+  },
+  {
+    messageId: "msg2",
+    senderId: "sarah456",
+    receiverId: "alex123",
+    text: "Hi Alex! Pretty good, just finished a new React component. How about you?",
+    timestamp: "2025-06-14T10:17:00Z",
+  },
+  {
+    messageId: "msg3",
+    senderId: "michael789",
+    receiverId: "emily321",
+    text: "Emily, did you get a chance to review the latest blog draft?",
+    timestamp: "2025-06-13T16:40:00Z",
+  },
+  {
+    messageId: "msg4",
+    senderId: "emily321",
+    receiverId: "michael789",
+    text: "Yes Michael, looks great! Just a few minor edits.",
+    timestamp: "2025-06-13T16:45:00Z",
+  },
+  {
+    messageId: "msg5",
+    senderId: "david654",
+    receiverId: "alex123",
+    text: "Alex, want to join me on a hike this weekend?",
+    timestamp: "06-12",
+  },
+  {
+    messageId: "msg6",
+    senderId: "alex123",
+    receiverId: "david654",
+    text: "Sounds awesome, David! Count me in.",
+    timestamp: "06-12",
+  },
+];
 
   export function getMockPosts() {
     return mockPosts;
