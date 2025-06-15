@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getMockUsers } from "../../Shared/Utilities/MockData";
 import { useParams } from "react-router-dom";
 import ChatContacts from '../Components/ChatContacts';
+import MessagesBox from '../Components/MessagesBox';
 
 const mockUsers = getMockUsers();
 const ChatPage = () => {
@@ -12,9 +13,10 @@ const ChatPage = () => {
         setUserChat(userdata);
       }, [userId]);
   return (
-    <div className="w-full h-full p-10">
-      <div className='h-[70vh]'>
+    <div className="w-full h-full ">
+      <div className='h-[80vh] flex gap-6 justify-center items-center'>
        <ChatContacts userId={userId} userData={userChat}></ChatContacts>
+       <MessagesBox></MessagesBox>
         </div>
       </div>
   )
