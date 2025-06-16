@@ -9,14 +9,14 @@ const WhiteTextinput = ({
   value,
 }) => {
   return (
-    <div className="w-full flex mt-3 justify-center items-center">
+    <div className="w-full flex justify-center mt-4 items-center">
       <input
         name={name}
         onChange={onChange}
         onBlur={onBlur}
         value={value}
         type={type}
-        className=" w-2/3 p-2 bg-transparent  placeholder-[#CFD9FC] rounded-md text-[#CFD9FC] border-white border"
+        className=" w-full p-2 bg-transparent  placeholder-[#CFD9FC] rounded-md text-[#CFD9FC] border-white border"
         placeholder={placeholder}
       />
     </div>
