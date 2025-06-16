@@ -14,7 +14,7 @@ const ChatPage = () => {
       }, [userId]);
   return (
     <div className="w-full h-full ">
-      <div className='h-[80vh] flex gap-6 justify-center items-center'>
+      <div className='h-[80vh] overflow-hidden flex gap-6 justify-center items-center'>
        <ChatContacts userId={userId} userData={userChat}></ChatContacts>
        <MessagesBox></MessagesBox>
         </div>
