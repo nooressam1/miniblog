@@ -1,7 +1,48 @@
 import React from "react";
 import WhiteTextinput from "../../Shared/Components/WhiteTextinput";
 import BlueButton from "../../Shared/Components/BlueButton";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+
 const SignComponent = ({ ChangePage }) => {
+  const backendUrl = "http://localhost:5003";
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().min(6).max(10).required("Username is required"),
+      email: Yup.string().email("Invalid email").required("Email is required"),
+      password: Yup.string()
+        .min(6, "Minimum 6 characters")
+        .required("Password is required"),
+    }),
+    onSubmit: async (values) => {
+      console.log("Form submitted:", values);
+
+      try {
+        const response = await axios.post(`${backendUrl}/api/auth/register`, {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        });
+        console.log(response.data);
+        // login(response.data)
+        // navigate("/");
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data?.message?.toLowerCase();
+          if (msg && msg?.includes("email")) formik.setFieldError("email", msg);
+          else if (msg && msg?.includes("username"))
+            formik.setFieldError("username", msg);
+        }
+      }
+    },
+  });
   return (
     <div
       style={{ boxShadow: "inset 0 4px 8px rgba(0,0,0,0.2)" }}
@@ -14,14 +55,39 @@ const SignComponent = ({ ChangePage }) => {
         Create new account
       </h1>
       <div className="flex flex-col  w-full  px-4">
-        <WhiteTextinput placeholder={"Username"} />
-        <WhiteTextinput placeholder={"Email"} />
+        <WhiteTextinput
+          name="username"
+          placeholder="Username"
+          value={formik.values.username}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errormessage={formik.errors.username}
+          condition={formik.touched.username && formik.errors.username}
+        />
 
-        <WhiteTextinput placeholder={"Password"} />
-        <WhiteTextinput placeholder={"Confirm password"} />
+        <WhiteTextinput
+          name="email"
+          placeholder="Email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errormessage={formik.errors.email}
+          condition={formik.touched.email && formik.errors.email}
+        />
+
+        <WhiteTextinput
+          name="password"
+          placeholder="Password"
+          type="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errormessage={formik.errors.password}
+          condition={formik.touched.password && formik.errors.password}
+        />
       </div>
       <div className="w-full ">
-        <BlueButton title={"Login"} />
+        <BlueButton Operation={formik.handleSubmit} title={"Login"} />
       </div>
       <p className="w-full text-center mt-4 text-sm md:text-md text-[#CFD9FC]  px-4">
         Have an account?{" "}

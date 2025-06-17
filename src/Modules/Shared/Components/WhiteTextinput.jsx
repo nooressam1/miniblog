@@ -7,6 +7,8 @@ const WhiteTextinput = ({
   onChange,
   onBlur,
   value,
+  errormessage,
+  condition,
 }) => {
   return (
     <div className="w-full flex justify-center mt-4 items-center">
@@ -19,6 +21,9 @@ const WhiteTextinput = ({
         className=" w-full p-2 bg-transparent  placeholder-[#CFD9FC] rounded-md text-[#CFD9FC] border-white border"
         placeholder={placeholder}
       />
+      {condition && (
+        <p className="mt-2 w-[65%] text-sm text-red-500">{errormessage}</p>
+      )}
     </div>
   );
 };
