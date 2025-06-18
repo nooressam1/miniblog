@@ -11,7 +11,7 @@ const WhiteTextinput = ({
   condition,
 }) => {
   return (
-    <div className="w-full flex justify-center mt-4 items-center">
+    <div className="w-full flex flex-col justify-center mt-4 items-center">
       <input
         name={name}
         onChange={onChange}
@@ -22,7 +22,7 @@ const WhiteTextinput = ({
         placeholder={placeholder}
       />
       {condition && (
-        <p className="mt-2 w-[65%] text-sm text-red-500">{errormessage}</p>
+        <p className="mt-2 w-full text-sm text-red-500">{errormessage}</p>
       )}
     </div>
   );

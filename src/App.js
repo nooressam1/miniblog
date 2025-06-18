@@ -7,11 +7,13 @@ import Navbar from "./Modules/Shared/Components/Navbar";
 import PostScreen from "./Modules/Browsing/Pages/PostScreen";
 import Account from "./Modules/Account/Pages/Account";
 import ChatPage from "./Modules/Chat/Page/ChatPage";
+import { AuthProvider } from "./Modules/Auth/Context/authContext";
 // import SignUpPage from "./Pages/SignUpPage"; // Ensure this component exists
 
 function App() {
   return (
     <BrowserRouter>
+    <AuthProvider>
       <Routes>
         <Route path="/:page" element={<AuthoPage />} />
 
@@ -22,6 +24,7 @@ function App() {
           <Route path="/chat/:userId" element={<ChatPage />} />
         </Route>
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

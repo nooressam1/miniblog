@@ -4,9 +4,11 @@ import BlueButton from "../../Shared/Components/BlueButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import {useAuth} from "../Context/authContext"
 
 const SignComponent = ({ ChangePage }) => {
   const backendUrl = "http://localhost:5003";
+  const {login} = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -31,8 +33,7 @@ const SignComponent = ({ ChangePage }) => {
           password: values.password,
         });
         console.log(response.data);
-        // login(response.data)
-        // navigate("/");
+        login();
       } catch (error) {
         if (error.response) {
           const msg = error.response.data?.message?.toLowerCase();

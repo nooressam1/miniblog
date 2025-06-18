@@ -2,8 +2,10 @@ import React from "react";
 import { IconSearch } from "@tabler/icons-react";
 import { IconUserCircle } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../Auth/Context/authContext";
 
 const Navbar = () => {
+  const {user} = useAuth();
   return (
     <div className="w-full h-24 pl-8 pr-5 p-2">
       <div className="flex w-full h-full justify-between items-center">
@@ -16,13 +18,13 @@ const Navbar = () => {
               <IconSearch color="white" stroke={2} />
             </button>
           </div>
-          <Link to={"/profile/" + "David%20Kim"}>
+          <Link to={`/profile/${user.username}`}>
             <div className="flex gap-2 w-full h-full justify-between items-center">
               <div className="flex w-full h-full justify-center items-center">
                 <IconUserCircle color="white" stroke={2} />
               </div>
 
-              <h1 className="text-[#CFD9FC] font-thin text-xl">Username</h1>
+              <h1 className="text-[#CFD9FC] font-thin text-xl">{user.username}</h1>
             </div>
           </Link>
         </div>

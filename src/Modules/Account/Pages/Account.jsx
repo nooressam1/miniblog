@@ -8,6 +8,7 @@ import TextPost from "../../Shared/Components/TextPost";
 import { useParams } from "react-router-dom";
 import EditInfo from "../Components/EditInfo";
 import ProfileButtons from "../../Browsing/Components/ProfileButtons";
+import axios from "axios";
 
 const mockposts = getMockPosts();
 const mockUsers = getMockUsers();
@@ -21,6 +22,7 @@ const breakpointColumnsObj = {
 const Account = ({ UserName }) => {
   const [userAuthenticated, setUserAuthenticated] = useState(true);
   const [openEditInfo, setOpenEditInfo] = useState(false);
+  const backendUrl = "http://localhost:5003";
 
   const [followingAccount, setFollowingAccount] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
@@ -32,12 +34,15 @@ const Account = ({ UserName }) => {
   const decodedUsername = decodeURIComponent(username); // decode %20 into space
 
   useEffect(() => {
-    console.log("Decoded username from URL:", decodedUsername);
-    console.log(
-      "Available usernames in mockUsers:",
-      mockUsers.map((u) => u.userName)
-    );
-
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/api/account/${username}`);
+        console.log("testing" + response.data);
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+      }
+    };
+    fetchUser();
     const userInfo = mockUsers.find((u) => u.userName === decodedUsername);
     setUserInfo(userInfo);
     console.log("Matched user info:", userInfo);
@@ -80,7 +85,11 @@ const Account = ({ UserName }) => {
             />
           </div>
 
-          <ProfileButtons setOpenEditInfo={setOpenEditInfo}  userInfo={userInfo} userAuthenticated={userAuthenticated}></ProfileButtons>
+          <ProfileButtons
+            setOpenEditInfo={setOpenEditInfo}
+            userInfo={userInfo}
+            userAuthenticated={userAuthenticated}
+          ></ProfileButtons>
         </div>
       </div>
 
@@ -110,8 +119,7 @@ const Account = ({ UserName }) => {
           ))}
         </Masonry>
       </div>
-               {openEditInfo && <EditInfo setOpenEditInfo={setOpenEditInfo}> </EditInfo>}
-
+      {openEditInfo && <EditInfo setOpenEditInfo={setOpenEditInfo}> </EditInfo>}
     </div>
   );
 };
