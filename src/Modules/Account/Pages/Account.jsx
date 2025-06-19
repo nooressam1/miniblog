@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import EditInfo from "../Components/EditInfo";
 import ProfileButtons from "../../Browsing/Components/ProfileButtons";
 import axios from "axios";
+import { useAuth } from "../../Auth/Context/authContext";
 
 const mockposts = getMockPosts();
 const mockUsers = getMockUsers();
@@ -20,10 +21,11 @@ const breakpointColumnsObj = {
 };
 
 const Account = ({ UserName }) => {
-  const [userAuthenticated, setUserAuthenticated] = useState(true);
+  const { user } = useAuth();
+
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
   const [openEditInfo, setOpenEditInfo] = useState(false);
   const backendUrl = "http://localhost:5003";
-
   const [followingAccount, setFollowingAccount] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -34,20 +36,25 @@ const Account = ({ UserName }) => {
   const decodedUsername = decodeURIComponent(username); // decode %20 into space
 
   useEffect(() => {
+    console.log(user);
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/api/account/${username}`);
-        console.log("testing" + response.data);
+        const response = await axios.get(
+          `${backendUrl}/api/account/${username}`
+        );
+        console.log("testing " + response.data.username);
+        setUserInfo(response.data);
       } catch (err) {
         console.error("Failed to fetch user:", err);
       }
     };
     fetchUser();
-    const userInfo = mockUsers.find((u) => u.userName === decodedUsername);
-    setUserInfo(userInfo);
-    console.log("Matched user info:", userInfo);
   }, [decodedUsername]);
-
+  useEffect(() => {
+    if (user && user.username === userInfo.username) {
+      setUserAuthenticated(true);
+    }
+  }, [userInfo]);
   useEffect(() => {
     let filteredPosts = [...mockposts];
     filteredPosts = filteredPosts.filter(
@@ -71,7 +78,7 @@ const Account = ({ UserName }) => {
         <img
           className="w-full h-full object-cover"
           alt="Banner"
-          src="https://i.pinimg.com/originals/c8/4f/b7/c84fb740471d58ba9597ace28969d490.gif"
+          src={`https://alkuwaiti.com/wp-content/uploads/2020/05/Hero-Banner-Placeholder-Dark-1024x480.png`}
         />
       </div>
 
@@ -81,7 +88,7 @@ const Account = ({ UserName }) => {
             <img
               className="w-full h-full object-cover rounded-2xl object-center"
               alt="pfp"
-              src={BannerTest}
+              src={userInfo.profilepicture}
             />
           </div>
 

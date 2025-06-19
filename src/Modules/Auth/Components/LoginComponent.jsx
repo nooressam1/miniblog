@@ -20,7 +20,8 @@ const LoginComponent = ({ ChangePage }) => {
           username: values.username,
           password: values.password,
         });
-        login(response.data.user);
+        const { user, token } = response.data;
+        login(user,token);
       } catch (err) {
         const msg = err.response.data?.message;
         console.log(msg);
