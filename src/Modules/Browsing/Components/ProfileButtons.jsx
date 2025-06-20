@@ -7,8 +7,8 @@ const ProfileButtons = ({ userInfo, userAuthenticated, setOpenEditInfo }) => {
   const [followingCount, setFollowingCount] = useState(null);
 
   useEffect(() => {
-    setFollowerCount(userInfo.followers.length);
-    setFollowingCount(userInfo.followers.length);
+    setFollowerCount(userInfo?.followers?.length );
+    setFollowingCount(userInfo?.following?.length);
   });
   return (
     <>

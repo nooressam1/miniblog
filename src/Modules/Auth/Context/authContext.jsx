@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
-    
+
     if (storedToken) {
       setToken(storedToken);
     }
@@ -33,12 +33,9 @@ export function AuthProvider({ children }) {
   };
   const login = async (user, newToken) => {
     console.log("adding log" + newToken);
-
     localStorage.setItem("token", newToken); // Just store it
     localStorage.setItem("user", JSON.stringify(user));
-
     setToken(newToken);
-
     setUser(user);
     console.log(user);
 

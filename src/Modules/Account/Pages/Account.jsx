@@ -12,7 +12,6 @@ import axios from "axios";
 import { useAuth } from "../../Auth/Context/authContext";
 
 const mockposts = getMockPosts();
-const mockUsers = getMockUsers();
 
 const breakpointColumnsObj = {
   default: 3,
@@ -42,8 +41,8 @@ const Account = ({ UserName }) => {
         const response = await axios.get(
           `${backendUrl}/api/account/${username}`
         );
-        console.log("testing " + response.data.username);
-        setUserInfo(response.data);
+        setUserInfo(response.data.user);
+        console.log("hehehe ", response.data.user)
       } catch (err) {
         console.error("Failed to fetch user:", err);
       }
@@ -51,10 +50,10 @@ const Account = ({ UserName }) => {
     fetchUser();
   }, [decodedUsername]);
   useEffect(() => {
-    if (user && user.username === userInfo.username) {
+    if (userInfo && user && user.username === userInfo.username) {
       setUserAuthenticated(true);
     }
-  }, [userInfo]);
+  }, [userInfo, user]);
   useEffect(() => {
     let filteredPosts = [...mockposts];
     filteredPosts = filteredPosts.filter(
