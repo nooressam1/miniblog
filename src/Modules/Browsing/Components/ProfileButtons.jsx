@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import EditInfo from "../../Account/Components/EditInfo";
+import { useAuth } from "../../Auth/Context/authContext";
 
 const ProfileButtons = ({ userInfo, userAuthenticated, setOpenEditInfo }) => {
   const [followingAccount, setFollowingAccount] = useState(false);
   const [followerCount, setFollowerCount] = useState(null);
   const [followingCount, setFollowingCount] = useState(null);
+  const { logout } = useAuth();
 
   useEffect(() => {
-    setFollowerCount(userInfo?.followers?.length );
+    setFollowerCount(userInfo?.followers?.length);
     setFollowingCount(userInfo?.following?.length);
   });
   return (
@@ -25,14 +27,24 @@ const ProfileButtons = ({ userInfo, userAuthenticated, setOpenEditInfo }) => {
               {followingCount} Following
             </h1>
             {userAuthenticated ? (
-              <button
-                className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
-                onClick={() => setOpenEditInfo((prev) => !prev)}
-              >
-                <h1 className="text-white font-medium text-sm md:text-base">
-                  Edit profile
-                </h1>
-              </button>
+              <>
+                <button
+                  className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
+                  onClick={() => setOpenEditInfo((prev) => !prev)}
+                >
+                  <h1 className="text-white font-medium text-sm md:text-base">
+                    Edit profile
+                  </h1>
+                </button>
+                <button
+                  className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
+                  onClick={() => logout()}
+                >
+                  <h1 className="text-white font-medium text-sm md:text-base">
+                    logout
+                  </h1>
+                </button>
+              </>
             ) : (
               <>
                 <button

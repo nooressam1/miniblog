@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [savedToken, setToken] = useState(null);
   const navigate = useNavigate();
+  const backendUrl = "http://localhost:5003";
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -25,9 +26,11 @@ export function AuthProvider({ children }) {
   }, []);
   const logout = () => {
     setLoading(true);
-    axios.get("http://localhost:5003/api/auth/logout").then(() => {
+    axios.post("http://localhost:5003/api/auth/logout").then(() => {
       setUser(null);
-      navigate("/login", { replace: true });
+      localStorage.setItem("token", null); // Just store it
+      localStorage.setItem("user", null);
+      navigate("/", { replace: true });
       setLoading(false);
     });
   };
