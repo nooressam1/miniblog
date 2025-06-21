@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
     navigate("/profile/" + user.username);
   };
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, loading ,savedToken}}>
       {children}
     </AuthContext.Provider>
   );
