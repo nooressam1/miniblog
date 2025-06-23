@@ -20,7 +20,7 @@ const breakpointColumnsObj = {
 };
 
 const Account = ({ UserName }) => {
-  const { user } = useAuth();
+  const { user, savedToken } = useAuth();
 
   const [userAuthenticated, setUserAuthenticated] = useState(false);
   const [openEditInfo, setOpenEditInfo] = useState(false);
@@ -42,32 +42,47 @@ const Account = ({ UserName }) => {
           `${backendUrl}/api/account/${username}`
         );
         setUserInfo(response.data.user);
-        console.log("hehehe ", response.data.user)
+        console.log("hehehe ", response.data.user);
       } catch (err) {
         console.error("Failed to fetch user:", err);
       }
     };
+
     fetchUser();
   }, [decodedUsername]);
   useEffect(() => {
     if (userInfo && user && user.username === userInfo.username) {
       setUserAuthenticated(true);
     }
-  }, [userInfo, user]);
+          console.log("testing autho",userAuthenticated)
+
+  }, [userInfo,decodedUsername]);
   useEffect(() => {
-    let filteredPosts = [...mockposts];
-    filteredPosts = filteredPosts.filter(
-      (post) => post.userName === decodedUsername
-    );
+    const fetchPosts = async () => {
+      try {
 
-    if (filterChoice === "Images") {
-      filteredPosts = filteredPosts.filter((post) => post.postType === "Photo");
-    } else if (filterChoice === "Pages") {
-      filteredPosts = filteredPosts.filter((post) => post.postType === "Text");
-    }
+        const res = await axios.get(
+          `${backendUrl}/api/post/getposts/${decodedUsername}`
+        );
 
-    setPosts(filteredPosts);
-  }, [filterChoice, decodedUsername]);
+        let filteredPosts = res.data;
+        if (filterChoice === "Images") {
+          filteredPosts = filteredPosts.filter(
+            (post) => post.posttype === "ImagePost"
+          );
+        } else if (filterChoice === "Pages") {
+          filteredPosts = filteredPosts.filter(
+            (post) => post.posttype === "textPost"
+          );
+        }
+
+        setPosts(filteredPosts);
+      } catch (errr) {
+        console.log("failed to get posts", errr);
+      }
+    };
+    fetchPosts();
+  }, [filterChoice,decodedUsername]);
 
   if (!userInfo) return <div>User not found</div>;
 
@@ -116,11 +131,12 @@ const Account = ({ UserName }) => {
           {posts.map((post) => (
             <TextPost
               key={post.id}
-              userName={post.userName}
-              captionText={post.captionText}
-              profilePicture={post.profilePicture}
-              postType={post.postType}
-              postPhoto={post.photoUrl}
+              userName={post.user.username}
+              captionText={post.description}
+              profilePicture={post.user.profilepicture}
+              postType={post.user.posttype}
+              postPhoto={post.postimages}
+              isOwner={userAuthenticated}
             />
           ))}
         </Masonry>
