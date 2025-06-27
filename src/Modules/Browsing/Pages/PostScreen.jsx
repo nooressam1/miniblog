@@ -3,10 +3,11 @@ import ReturnButton from "../../Shared/Components/ReturnButton";
 import PostComponent from "../Components/PostComponent";
 import ReplyingComment from "../Components/ReplyingComment";
 import Comments from "../Components/Comments";
+import { useParams } from "react-router-dom";
 
-const PostScreen = ({postType}) => {
+const PostScreen = ({ postType }) => {
   const [replyTo, setReplyTo] = useState(null); // null or it will be which post or commment
-
+  const { postid } = useParams();
   const handleReplyToPost = () => {
     setReplyTo({ type: "post" });
   };
@@ -16,11 +17,11 @@ const PostScreen = ({postType}) => {
   };
   return (
     <div className="w-full  pl-7 pr-7 items-center justify-center flex flex-col">
-      <div className={` h-full flex flex-col gap-2 md:w-[800px]  justify-center ${
-          postType === "Photo"
-            ? " md:w-[800px]"
-            : " w-[100%] "
-        }`}>
+      <div
+        className={` h-full flex flex-col gap-2 md:w-[800px]  justify-center ${
+          postType === "Photo" ? " md:w-[800px]" : " w-[100%] "
+        }`}
+      >
         <ReturnButton></ReturnButton>
 
         <PostComponent

@@ -1,17 +1,57 @@
 import React, { useEffect, useState } from "react";
 import EditInfo from "../../Account/Components/EditInfo";
 import { useAuth } from "../../Auth/Context/authContext";
+import axios from "axios";
+import { useAccount } from "../../Account/context/accountContext";
 
-const ProfileButtons = ({ userInfo, userAuthenticated, setOpenEditInfo }) => {
+const ProfileButtons = ({ userAuthenticated, setOpenEditInfo }) => {
   const [followingAccount, setFollowingAccount] = useState(false);
   const [followerCount, setFollowerCount] = useState(null);
   const [followingCount, setFollowingCount] = useState(null);
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const { fetchUser, userInfo } = useAccount();
+
+  const backendUrl = "http://localhost:5003";
 
   useEffect(() => {
     setFollowerCount(userInfo?.followers?.length);
     setFollowingCount(userInfo?.following?.length);
-  });
+    if (
+      userInfo?.followers?.some((id) => id.toString() === user._id.toString())
+    ) {
+      setFollowingAccount(true);
+    }
+  }, [userInfo, user._id]);
+  const HandleUserfollowing = async () => {
+    try {
+      if (followingAccount) {
+        const response = await axios.put(
+          `${backendUrl}/api/account/unfollowUser/${userInfo.username}`,
+          { unfollowerUsername: user.username }
+        );
+        await fetchUser(userInfo.username);
+        setFollowerCount(userInfo?.followers?.length || 0);
+        setFollowingCount(userInfo?.following?.length);
+
+        setFollowingAccount(!followingAccount);
+        console.log(response.data.message);
+      } else {
+        const response = await axios.put(
+          `${backendUrl}/api/account/followUser/${userInfo.username}`,
+          { followerUsername: user.username }
+        );
+        await fetchUser(userInfo.username);
+        setFollowerCount(userInfo?.followers?.length || 0);
+        setFollowingCount(userInfo?.following?.length);
+
+        setFollowingAccount(!followingAccount);
+        console.log(response.data.message);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <>
       <div className="w-full h-fit flex flex-col gap-4 p-4">
@@ -57,10 +97,10 @@ const ProfileButtons = ({ userInfo, userAuthenticated, setOpenEditInfo }) => {
                 </button>
                 <button
                   className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
-                  onClick={() => setFollowingAccount(!followingAccount)}
+                  onClick={() => HandleUserfollowing()}
                 >
                   <h1 className="text-white font-medium text-sm md:text-base">
-                    {followingAccount ? "Follow" : "Unfollow"}
+                    {followingAccount ? "Unfollow" : "Follow"}
                   </h1>
                 </button>
               </>

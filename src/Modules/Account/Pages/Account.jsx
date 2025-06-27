@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import BannerTest from "../Images/BannerTest.webp";
 import QuickPost from "../../Shared/Components/QuickPost";
 import PostFilter from "../Components/PostFilter";
-import { getMockPosts, getMockUsers } from "../../Shared/Utilities/MockData";
 import Masonry from "react-masonry-css";
 import TextPost from "../../Shared/Components/TextPost";
 import { useParams } from "react-router-dom";
@@ -10,8 +9,8 @@ import EditInfo from "../Components/EditInfo";
 import ProfileButtons from "../../Browsing/Components/ProfileButtons";
 import axios from "axios";
 import { useAuth } from "../../Auth/Context/authContext";
+import { useAccount } from "../context/accountContext";
 
-const mockposts = getMockPosts();
 
 const breakpointColumnsObj = {
   default: 3,
@@ -21,12 +20,11 @@ const breakpointColumnsObj = {
 
 const Account = ({ UserName }) => {
   const { user, savedToken } = useAuth();
+  const { fetchUser, userInfo } = useAccount();
 
   const [userAuthenticated, setUserAuthenticated] = useState(false);
   const [openEditInfo, setOpenEditInfo] = useState(false);
   const backendUrl = "http://localhost:5003";
-  const [followingAccount, setFollowingAccount] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
   const [posts, setPosts] = useState([]);
 
   const [filterChoice, setFilterChoice] = useState("All");
@@ -35,32 +33,18 @@ const Account = ({ UserName }) => {
   const decodedUsername = decodeURIComponent(username); // decode %20 into space
 
   useEffect(() => {
-    console.log(user);
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          `${backendUrl}/api/account/${username}`
-        );
-        setUserInfo(response.data.user);
-        console.log("hehehe ", response.data.user);
-      } catch (err) {
-        console.error("Failed to fetch user:", err);
-      }
-    };
-
-    fetchUser();
+    fetchUser(username);
   }, [decodedUsername]);
+
   useEffect(() => {
     if (userInfo && user && user.username === userInfo.username) {
       setUserAuthenticated(true);
     }
-          console.log("testing autho",userAuthenticated)
-
-  }, [userInfo,decodedUsername]);
+    console.log("testing autho", userAuthenticated);
+  }, [userInfo, decodedUsername]);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-
         const res = await axios.get(
           `${backendUrl}/api/post/getposts/${decodedUsername}`
         );
@@ -82,7 +66,7 @@ const Account = ({ UserName }) => {
       }
     };
     fetchPosts();
-  }, [filterChoice,decodedUsername]);
+  }, [filterChoice, decodedUsername]);
 
   if (!userInfo) return <div>User not found</div>;
 
@@ -108,7 +92,6 @@ const Account = ({ UserName }) => {
 
           <ProfileButtons
             setOpenEditInfo={setOpenEditInfo}
-            userInfo={userInfo}
             userAuthenticated={userAuthenticated}
           ></ProfileButtons>
         </div>
@@ -131,6 +114,7 @@ const Account = ({ UserName }) => {
           {posts.map((post) => (
             <TextPost
               key={post.id}
+              postid={post.id}
               userName={post.user.username}
               captionText={post.description}
               profilePicture={post.user.profilepicture}

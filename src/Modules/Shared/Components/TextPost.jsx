@@ -13,6 +13,7 @@ const TextPost = ({
   postType,
   postPhoto,
   isOwner,
+  postid
 }) => {
   const [likePost, setLikePost] = useState(false);
   const [savePost, setSavePost] = useState(false);
@@ -65,37 +66,16 @@ const TextPost = ({
                     <IconHeart stroke={2} color="white" />
                   </button>
                 )}
-                {savePost ? (
-                  <button
-                    onClick={() => setSavePost(!savePost)}
-                    className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
-                  >
-                    <img
-                      src={Saved}
-                      className=" cursor-pointer p-1 h-fit w-fit object-cover"
-                      alt="Saved"
-                    />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setSavePost(!savePost)}
-                    className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
-                  >
-                    <img
-                      src={Unsaved}
-                      alt="Unsaved"
-                      className=" cursor-pointer p-1 h-fit w-fit object-cover"
-                    />
-                  </button>
-                )}{" "}
+               
               </>
             )}
+            <Link to={`/post/${postid}`}>
             <button
-              // onClick={commentAction}
               className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
             >
               <IconMessage2 stroke={2} color="white" />
             </button>
+            </Link>
           </div>
         </div>
       </div>
