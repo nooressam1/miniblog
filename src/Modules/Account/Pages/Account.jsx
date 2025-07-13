@@ -114,12 +114,12 @@ const Account = ({ UserName }) => {
           {posts.map((post) => (
             <TextPost
               key={post.id}
-              postid={post.id}
+              postid={post._id}
               userName={post.user.username}
               captionText={post.description}
               profilePicture={post.user.profilepicture}
-              postType={post.user.posttype}
-              postPhoto={post.postimages}
+              postType={post.posttype}
+              postPhoto={post.postimages[0]}
               isOwner={userAuthenticated}
             />
           ))}

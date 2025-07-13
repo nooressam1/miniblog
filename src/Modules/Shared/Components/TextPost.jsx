@@ -13,23 +13,22 @@ const TextPost = ({
   postType,
   postPhoto,
   isOwner,
-  postid
+  postid,
 }) => {
   const [likePost, setLikePost] = useState(false);
   const [savePost, setSavePost] = useState(false);
-
   return (
     <div>
       <div className="bg-[#20284E]   rounded-md">
         {postType === "ImagePost" && (
-        <div className="h-1/3 w-full ">
-          <img
-            src={postPhoto[0]}
-            alt="postImage"
-            className="rounded-t-lg h-full w-full object-cover"
-          />
-        </div>
-         )}
+          <div className="h-1/3 w-full ">
+            <img
+              src={`http://localhost:5003${postPhoto}`} // prepend your backend base URL
+              alt="postImage"
+              className="rounded-t-lg h-full w-full object-cover"
+            />
+          </div>
+        )}
         <div
           className={`bg-[#7E96F6] items-center gap-2  p-3  ${
             postType === "ImagePost" ? "rounded-none" : "rounded-t-md"
@@ -66,15 +65,17 @@ const TextPost = ({
                     <IconHeart stroke={2} color="white" />
                   </button>
                 )}
-               
               </>
             )}
             <Link to={`/post/${postid}`}>
-            <button
-              className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
-            >
-              <IconMessage2 stroke={2} color="white" />
-            </button>
+              <button
+                className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
+                onClick={() => {
+                  console.log(postid);
+                }}
+              >
+                <IconMessage2 stroke={2} color="white" />
+              </button>
             </Link>
           </div>
         </div>

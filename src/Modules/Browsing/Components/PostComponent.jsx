@@ -22,21 +22,21 @@ const PostComponent = ({
   return (
     <div
       className={`flex flex-col md:flex-row justify-center items-center w-full ${
-        postType === "Photo" ? "  h-fit md:h-[550px]" : " h-fit "
+        postType === "ImagePost" ? "  h-fit md:h-[550px]" : " h-fit "
       } `}
     >
-      {postType === "Photo" && <ImageCarousel></ImageCarousel>}
+      {postType === "ImagePost" && <ImageCarousel postPhoto={postPhoto}></ImageCarousel>}
 
       <div
         className={`bg-[#20284E]   flex flex-col ${
-          postType === "Photo"
+          postType === "ImagePost"
             ? "rounded-b-md md:rounded-r-md h-full  md:rounded-l-none w-[450px] md:w-[35%] "
             : "rounded-md w-[100%] h-fit "
         }`}
       >
         <div
           className={`bg-[#7E96F6] items-center gap-2 p-3 ${
-            postType === "Photo"
+            postType === "ImagePost"
               ? " rounded-none md:rounded-tr-md"
               : "rounded-t-md"
           } flex`}
@@ -48,7 +48,7 @@ const PostComponent = ({
               alt="Pfp"
             />
           </div>
-          <Link to="/profile/DavidKim">
+          <Link to={`/profile/${userName}`}>
             <h1 className="text-[#E4EAFF] cursor-pointer">{userName}</h1>
           </Link>
         </div>

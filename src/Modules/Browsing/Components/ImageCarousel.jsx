@@ -6,12 +6,11 @@ import {
   IconChevronCompactRight,
 } from "@tabler/icons-react";
 
-const ImageCarousel = () => {
-  const ImagesArray = [testphoto, teddyBear];
+const ImageCarousel = ({postPhoto}) => {
   const [currentImage, setCurrentImage] = useState(0);
 
   const handleNextImage = () => {
-    if (currentImage === ImagesArray.length - 1) {
+    if (currentImage === postPhoto.length - 1) {
       setCurrentImage(0);
     } else {
       setCurrentImage(currentImage + 1);
@@ -19,18 +18,20 @@ const ImageCarousel = () => {
   };
    const handlePrevImage = () => {
     if (currentImage === 0) {
-      setCurrentImage(ImagesArray.length - 1);
+      setCurrentImage(postPhoto.length - 1);
     } else {
       setCurrentImage(currentImage - 1);
     }
   };
   return (
     <div className="relative md:h-[550px] w-[450px] h-[450px] md:w-[550px]  ">
-      <img
-        src={ImagesArray[currentImage]}
+  <img
+        src={`http://localhost:5003${postPhoto[currentImage]}`}
         alt="carousel"
         className="md:rounded-l-md md:rounded-tr-none rounded-t-md rounded-bl-none h-full w-full object-cover"
       />
+
+    
 
       {/* Left Arrow */}
       <button
