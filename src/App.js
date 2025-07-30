@@ -9,26 +9,28 @@ import Account from "./Modules/Account/Pages/Account";
 import ChatPage from "./Modules/Chat/Page/ChatPage";
 import { AuthProvider } from "./Modules/Auth/Context/authContext";
 import { AccountProvider } from "./Modules/Account/context/accountContext";
+import { PostProvider } from "./Modules/Browsing/context/PostContext";
 
 // import SignUpPage from "./Pages/SignUpPage"; // Ensure this component exists
 
 function App() {
   return (
     <BrowserRouter>
-    <AuthProvider>
-      <AccountProvider>
-      <Routes>
-        <Route path="/:page" element={<AuthoPage />} />
+      <AuthProvider>
+        <AccountProvider>
+          <PostProvider>
+            <Routes>
+              <Route path="/:page" element={<AuthoPage />} />
 
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<HomePage />} />
-
-          <Route path="/post/:postid" element={<PostScreen />} />
-          <Route path="/profile/:username" element={<Account />} />
-          <Route path="/chat/:userId" element={<ChatPage />} />
-        </Route>
-      </Routes>
-      </AccountProvider>
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/post/:postid" element={<PostScreen />} />
+                <Route path="/profile/:username" element={<Account />} />
+                <Route path="/chat/:userId" element={<ChatPage />} />
+              </Route>
+            </Routes>
+          </PostProvider>
+        </AccountProvider>
       </AuthProvider>
     </BrowserRouter>
   );

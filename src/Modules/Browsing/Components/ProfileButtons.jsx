@@ -17,11 +17,12 @@ const ProfileButtons = ({ userAuthenticated, setOpenEditInfo }) => {
     setFollowerCount(userInfo?.followers?.length);
     setFollowingCount(userInfo?.following?.length);
     if (
-      userInfo?.followers?.some((id) => id.toString() === user._id.toString())
+      userInfo?.followers?.some((id) => id.toString() === user?._id.toString())
     ) {
       setFollowingAccount(true);
     }
-  }, [userInfo, user._id]);
+  }, [userInfo, user]);
+
   const HandleUserfollowing = async () => {
     try {
       if (followingAccount) {

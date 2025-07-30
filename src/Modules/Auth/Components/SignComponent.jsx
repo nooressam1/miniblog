@@ -5,10 +5,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import {useAuth} from "../Context/authContext"
+import { useNavigate } from "react-router-dom";
 
 const SignComponent = ({ ChangePage }) => {
   const backendUrl = "http://localhost:5003";
   const {login} = useAuth();
+    const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -31,9 +33,12 @@ const SignComponent = ({ ChangePage }) => {
           username: values.username,
           email: values.email,
           password: values.password,
-        });
+        }, {withCredentials: true});
         console.log(response.data);
-        login();
+
+        login(response.data.user, response.data.accessToken);
+                navigate("/", { replace: true });
+
       } catch (error) {
         if (error.response) {
           const msg = error.response.data?.message?.toLowerCase();

@@ -24,7 +24,7 @@ const ImageCarousel = ({postPhoto}) => {
     }
   };
   return (
-    <div className="relative md:h-[550px] w-[450px] h-[450px] md:w-[550px]  ">
+    <div className="relative md:h-[650px] w-[550px] h-[550px] md:w-[650px]  ">
   <img
         src={`http://localhost:5003${postPhoto[currentImage]}`}
         alt="carousel"

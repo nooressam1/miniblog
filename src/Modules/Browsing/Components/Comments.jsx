@@ -6,62 +6,69 @@ import Saved from "../../Shared/Images/Saved.png";
 import Unsaved from "../../Shared/Images/Unsaved.png";
 import testphoto from "../../Auth/Images/TestPhoto.jpg";
 import { IconMessage2 } from "@tabler/icons-react";
-const Comments = ({
-  userName,
-  captionText,
-  profilePicture,
-  postType,
-  postPhoto,
-  commentAction,
-}) => {
+import axios from "axios";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import CommentInfo from "./CommentInfo";
+import { usePost } from "../context/PostContext";
+const Comments = ({ comment }) => {
   const [likePost, setLikePost] = useState(false);
-  const [savePost, setSavePost] = useState(false);
+  const [moreComments, setMoreComments] = useState(false);
+  const backendUrl = "http://localhost:5003";
+  const { postid } = useParams();
+
+  const {
+    postID,
+    openReplyTo,
+    setOpenReplyTo,
+    replyingParentCommentId,
+    repliedtoName,
+    postData,
+    commentsData,
+    FetchComments,
+    fetchPostData,
+    setPostID,
+    handleReplyToPost,
+    handleReplyToComment,
+    FetchParentComments,
+    nestedComments
+  } = usePost();
+ useEffect(() => {
+    FetchParentComments(comment);
+  }, [commentsData]);
+
+
+
   return (
-    <div className="bg-[#20284E]   items-center w-full justify-between  rounded-md flex p-3 ">
-      <div className="flex gap-2 items-center">
-        <div className="h-10 w-10">
-          <img
-            className="rounded-3xl cursor-pointer h-full w-full object-cover"
-            src={profilePicture}
-            alt="Pfp"
-          />
-        </div>
-        <h1 className="text-[#E4EAFF] cursor-pointer font-bold capitalize ">
-          {userName}
-        </h1>
-        <h1 className="text-[#CFD9FC]">{captionText}</h1>
-      </div>
-
-      {/* Main content area with flex-grow */}
-      <div className="flex flex-col justify-between h-full ">
-        {/* Buttons stick to bottom */}
-        <div className="mt-auto ">
-          <div className="flex gap-2 justify-end">
-            {likePost ? (
+    <div className="bg-[#20284E]   items-top w-full justify-between gap-3 rounded-md  p-3 pt-4 ">
+      <>
+        <>
+          <CommentInfo comment={comment}></CommentInfo>
+          {nestedComments[comment._id]?.length > 0 && (
+            <div className="pl-7 flex flex-col gap-2 ">
               <button
-                onClick={() => setLikePost(!likePost)}
-                className="bg-[#B36ABE] rounded-xl p-1 flex w-fit h-full text-center justify-center items-center"
+                onClick={() => {
+                  setMoreComments(!moreComments);
+                }}
+                className="text-[#e4eaff71] text-left text-[12px] p-2 cursor-pointer  capitalize "
               >
-                <IconHeartFilled color="white" />
+                {moreComments ? "Show less Replies" : "View Replies"}
               </button>
-            ) : (
-              <button
-                onClick={() => setLikePost(!likePost)}
-                className="bg-[#B36ABE] rounded-xl p-1 flex w-fit h-full text-center justify-center items-center"
-              >
-                <IconHeart stroke={2} color="white" />
-              </button>
-            )}
-
-            <button
-              onClick={() => commentAction(userName)} // ✅ Now it's only called on click
-              className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
-            >
-              <IconMessage2 stroke={2} color="white" />
-            </button>
-          </div>
-        </div>
-      </div>
+              {moreComments &&
+                nestedComments[comment._id].map((comments, index) => {
+                  console.log(comments);
+                  return (
+                    <CommentInfo
+                      repliedComment
+                      comment={comments}
+                      key={index}
+                    />
+                  );
+                })}
+            </div>
+          )}
+        </>
+      </>
     </div>
   );
 };

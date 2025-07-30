@@ -3,41 +3,58 @@ import ReturnButton from "../../Shared/Components/ReturnButton";
 import PostComponent from "../Components/PostComponent";
 import ReplyingComment from "../Components/ReplyingComment";
 import Comments from "../Components/Comments";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../Auth/Context/authContext";
+import { usePost } from "../context/PostContext";
 
 const PostScreen = () => {
-  const [replyTo, setReplyTo] = useState(null); // null or it will be which post or commment
   const { postid } = useParams();
-  const backendUrl = "http://localhost:5003";
-  const [postData, setPostData] = useState(false);
-  const handleReplyToPost = () => {
-    setReplyTo({ type: "post" });
-  };
+  const {
+    postID,
+    openReplyTo,
+    setOpenReplyTo,
+    replyingParentCommentId,
+    repliedtoName,
+    postData,
+    commentsData,
+    FetchComments,
+    fetchPostData,
+    setPostID,
+    handleReplyToPost,
+    handleReplyToComment,
+    replyTo,
+    setPostData,
+    setCommentsData,
+  } = usePost();
 
-  const handleReplyToComment = (commentId) => {
-    setReplyTo({ type: "comment", id: commentId });
-  };
   useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        const res = await axios.get(
-          `${backendUrl}/api/post/getPostInfo/${postid}`
-        );
-        console.log(res);
-        setPostData(res.data);
-      } catch (err) {
-        console.log("failed to get posts", err);
-      }
-    };
-    fetchPostData();
+    if (!postid) {
+      setPostID(null);
+      setPostData(null);
+      // if you have setCommentsData or similar, call it too
+      setCommentsData([]);
+      return;
+    }
+
+    setPostID(postid);
   }, [postid]);
+  useEffect(() => {
+    const loadData = async () => {
+      fetchPostData(postid);
+      FetchComments(postid);
+    };
+
+    loadData();
+  }, [postid]);
+  if (!postid || postid === "undefined") {
+    return <div className="text-white">no posts found</div>
+  }
   return (
     <div className="w-full  pl-7 pr-7 items-center justify-center flex flex-col">
       <div
-        className={` h-full flex flex-col gap-2 md:w-[800px]  justify-center ${
-          postData.posttype === "ImagePost" ? " md:w-[800px]" : " w-[100%] "
-        }`}
+        className={` h-full flex flex-col gap-2 md:w-[900px] justify-center 
+        `}
       >
         <ReturnButton></ReturnButton>
 
@@ -50,16 +67,20 @@ const PostScreen = () => {
           postPhoto={postData.postimages}
         ></PostComponent>
         <div className="flex flex-col w-full justify-center items-center mt-4 gap-4">
-          {replyTo && (
+          {openReplyTo && (
             <ReplyingComment
               userName={replyTo.type === "post" ? "Post" : `${replyTo.id}`}
-              captionText="hehehehe"
-            ></ReplyingComment>
+              CommenterName={postData.user?.username}
+              buttonAction={() => setOpenReplyTo(false)}
+              replyingParentCommentId={replyingParentCommentId}
+              postid={postid}
+              repliedtoName={repliedtoName}
+              FetchComments={FetchComments}
+            />
           )}
-          <Comments
-            userName="ooxx"
-            commentAction={handleReplyToComment}
-          ></Comments>
+          {commentsData.map((comment) => (
+            <Comments key={comment._id} comment={comment}></Comments>
+          ))}
         </div>
       </div>
     </div>

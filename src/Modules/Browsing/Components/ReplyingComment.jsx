@@ -7,17 +7,45 @@ import Unsaved from "../../Shared/Images/Unsaved.png";
 import testphoto from "../../Auth/Images/TestPhoto.jpg";
 import { IconMessage2 } from "@tabler/icons-react";
 import { IconSend2 } from "@tabler/icons-react";
+import { useAuth } from "../../Auth/Context/authContext";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 const ReplyingComment = ({
   userName,
-  captionText,
-  profilePicture,
+  CommenterName,
+  postid,
   postType,
-  postPhoto,
+  replyingParentCommentId,
+  repliedtoName,
+  buttonAction,
+  FetchComments
 }) => {
-  const [likePost, setLikePost] = useState(false);
-  const [savePost, setSavePost] = useState(false);
   const [focusState, setFocusState] = useState(false);
   const textareaRef = useRef(null);
+  const { user, savedToken } = useAuth();
+  const backendUrl = "http://localhost:5003";
+
+  const createComment = async () => {
+    try {
+      const res = await axios.post(
+        `${backendUrl}/api/comment/UploadComment/${postid}`,
+        {
+          userId: user._id,
+          text: textareaRef.current.value,
+          parentCommentId: replyingParentCommentId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${savedToken}`,
+          },
+        }
+      );
+      FetchComments();
+      console.log("Comment posted successfully", res.data);
+    } catch (err) {
+      console.log("Failed to post comment", err);
+    }
+  };
 
   const handleInput = () => {
     const textarea = textareaRef.current;
@@ -30,7 +58,7 @@ const ReplyingComment = ({
     <div className="bg-[#20284E]   items-center w-full justify-between  rounded-md flex p-3 ">
       <div className=" gap-2 items-center w-full ">
         <h1 className="text-[#8194D4] text-sm cursor-pointer  capitalize ">
-          Replied to @{userName}
+          Reply to @{repliedtoName}
         </h1>
         <textarea
           ref={textareaRef}
@@ -47,7 +75,7 @@ const ReplyingComment = ({
       <div className="flex items-end justify-end  h-full ">
         <div className="flex gap-2 ">
           <button
-            onClick={() => setSavePost(!savePost)}
+            onClick={() =>{buttonAction(); createComment()}}
             className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
           >
             <IconSend2 stroke={2} color="white" />

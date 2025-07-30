@@ -5,8 +5,11 @@ import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useAuth } from "../Context/authContext";
+import { Navigate, useNavigate } from "react-router-dom";
 const LoginComponent = ({ ChangePage }) => {
   const backendUrl = "http://localhost:5003";
+    const navigate = useNavigate();
+
   const { login } = useAuth();
   const formik = useFormik({
     initialValues: { username: "", password: "" },
@@ -16,12 +19,19 @@ const LoginComponent = ({ ChangePage }) => {
     }),
     onSubmit: async (values) => {
       try {
-        const response = await axios.post(`${backendUrl}/api/auth/login `, {
-          username: values.username,
-          password: values.password,
-        });
-        const { user, token } = response.data;
-        login(user,token);
+        const response = await axios.post(
+          `${backendUrl}/api/auth/login`,
+          {
+            username: values.username,
+            password: values.password,
+          },
+          { withCredentials: true }
+        );
+
+        console.log(response.data.user);
+        login(response.data.user, response.data.accessToken);
+        navigate("/", { replace: true });
+
       } catch (err) {
         const msg = err.response.data?.message;
         console.log(msg);

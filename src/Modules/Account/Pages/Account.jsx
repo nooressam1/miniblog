@@ -40,7 +40,6 @@ const Account = ({ UserName }) => {
     if (userInfo && user && user.username === userInfo.username) {
       setUserAuthenticated(true);
     }
-    console.log("testing autho", userAuthenticated);
   }, [userInfo, decodedUsername]);
   useEffect(() => {
     const fetchPosts = async () => {

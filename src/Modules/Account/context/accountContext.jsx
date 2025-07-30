@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
+import { useAuth } from "../../Auth/Context/authContext";
 
 const AccountContext = createContext();
 
 export function AccountProvider({ children }) {
-  const backendUrl = "http://localhost:5003";
+  const { backendUrl } = useAuth();
   const [userInfo, setUserInfo] = useState(null);
 
   const fetchUser = async (username) => {

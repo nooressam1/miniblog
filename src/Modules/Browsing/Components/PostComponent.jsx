@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IconHeart } from "@tabler/icons-react";
 import { IconHeartFilled } from "@tabler/icons-react";
 import PfpExample from "../../Shared/Images/PfpExample.jpg";
@@ -8,6 +8,7 @@ import testphoto from "../../Auth/Images/TestPhoto.jpg";
 import { IconMessage2 } from "@tabler/icons-react";
 import ImageCarousel from "./ImageCarousel";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../Auth/Context/authContext";
 const PostComponent = ({
   userName,
   captionText,
@@ -18,14 +19,24 @@ const PostComponent = ({
 }) => {
   const [likePost, setLikePost] = useState(false);
   const [savePost, setSavePost] = useState(false);
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
 
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user && user.username === userName) {
+      setUserAuthenticated(true);
+    }
+  }, [user,userName]);
   return (
     <div
       className={`flex flex-col md:flex-row justify-center items-center w-full ${
-        postType === "ImagePost" ? "  h-fit md:h-[550px]" : " h-fit "
+        postType === "ImagePost" ? "  h-fit md:h-[650px]" : " h-fit "
       } `}
     >
-      {postType === "ImagePost" && <ImageCarousel postPhoto={postPhoto}></ImageCarousel>}
+      {postType === "ImagePost" && (
+        <ImageCarousel postPhoto={postPhoto}></ImageCarousel>
+      )}
 
       <div
         className={`bg-[#20284E]   flex flex-col ${
@@ -60,45 +71,26 @@ const PostComponent = ({
           {/* Buttons stick to bottom */}
           <div className="mt-auto pt-4">
             <div className="flex gap-2 justify-end">
-              {likePost ? (
-                <button
-                  onClick={() => setLikePost(!likePost)}
-                  className="bg-[#B36ABE]  hover:bg-[#da85e7] rounded-xl p-1 flex w-fit h-full text-center justify-center items-center"
-                >
-                  <IconHeartFilled color="white" />
-                </button>
-              ) : (
-                <button
-                  onClick={() => setLikePost(!likePost)}
-                  className="bg-[#B36ABE]  hover:bg-[#da85e7] rounded-xl p-1 flex w-fit h-full text-center justify-center items-center"
-                >
-                  <IconHeart stroke={2} color="white" />
-                </button>
-              )}
-
-              {savePost ? (
-                <button
-                  onClick={() => setSavePost(!savePost)}
-                  className="bg-[#B36ABE]  hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
-                >
-                  <img
-                    src={Saved}
-                    className="cursor-pointer p-1 h-fit w-fit object-cover"
-                    alt="Saved"
-                  />
-                </button>
-              ) : (
-                <button
-                  onClick={() => setSavePost(!savePost)}
-                  className="bg-[#B36ABE]  hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
-                >
-                  <img
-                    src={Unsaved}
-                    alt="Unsaved"
-                    className="cursor-pointer p-1 h-fit w-fit object-cover"
-                  />
-                </button>
-              )}
+             {!userAuthenticated && (
+                           <>
+                             {likePost ? (
+                               <button
+                                 onClick={() => setLikePost(!likePost)}
+                                 className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-fit h-full text-center justify-center items-center"
+                               >
+                                 <IconHeartFilled color="white" />
+                               </button>
+                             ) : (
+                               <button
+                                 onClick={() => setLikePost(!likePost)}
+                                 className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-fit h-full text-center justify-center items-center"
+                               >
+                                 <IconHeart stroke={2} color="white" />
+                               </button>
+                              
+                             )}
+                             </>)}
+                             
               <button
                 onClick={commentAction}
                 className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
