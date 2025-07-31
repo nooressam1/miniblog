@@ -19,12 +19,11 @@ const breakpointColumnsObj = {
 };
 
 const Account = ({ UserName }) => {
-  const { user, savedToken } = useAuth();
+  const { user, savedToken,backendUrl } = useAuth();
   const { fetchUser, userInfo } = useAccount();
 
   const [userAuthenticated, setUserAuthenticated] = useState(false);
   const [openEditInfo, setOpenEditInfo] = useState(false);
-  const backendUrl = "http://localhost:5003";
   const [posts, setPosts] = useState([]);
 
   const [filterChoice, setFilterChoice] = useState("All");
@@ -75,15 +74,15 @@ const Account = ({ UserName }) => {
         <img
           className="w-full h-full object-cover"
           alt="Banner"
-          src={`https://alkuwaiti.com/wp-content/uploads/2020/05/Hero-Banner-Placeholder-Dark-1024x480.png`}
+          src={userInfo.banner}
         />
       </div>
 
       <div className="w-full min-h-[23vh] max-h-[28vh] bg-[#20284E] flex items-center">
         <div className="w-full p-5 h-full flex flex-col md:flex-row">
-          <div className="w-40 h-52 md:w-56 md:h-60 rounded-lg md:-mt-24 -mt-40">
+          <div className="w-40 h-52 md:w-56 md:h-48 rounded-lg md:-mt-24 -mt-40">
             <img
-              className="w-full h-full object-cover rounded-2xl object-center"
+              className="w-full h-full object-cover rounded-full  object-center"
               alt="pfp"
               src={userInfo.profilepicture}
             />

@@ -14,20 +14,18 @@ const Navbar = () => {
             <h1 className="text-[#CFD9FC] font-bold text-2xl">EmberPages</h1>
           </Link>
           <div className="grid h-full  grid-cols-[50px_1fr] justify-center items-center">
-             <div className="h-2/5 w-2/3">
+            <div className="h-2/5 w-2/3">
               <button className="bg-[#B36ABE] rounded-md  flex w-full h-full text-center justify-center items-center">
                 <IconSearch color="white" stroke={2} />
               </button>
             </div>
-<Link to="/login" replace>
-            <button
-                  className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
-                >
-                  <h1 className="text-white font-medium text-sm md:text-base">
-                    Login
-                  </h1>
-                </button>
-          </Link>
+            <Link to="/login" replace>
+              <button className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center">
+                <h1 className="text-white font-medium text-sm md:text-base">
+                  Login
+                </h1>
+              </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -47,8 +45,12 @@ const Navbar = () => {
           </div>
           <Link to={`/profile/${user.username}`}>
             <div className="flex gap-2 w-full h-full justify-between items-center">
-              <div className="flex w-full h-full justify-center items-center">
-                <IconUserCircle color="white" stroke={2} />
+              <div className="flex  justify-center items-center h-10 w-10">
+                <img
+                  className="rounded-3xl cursor-pointer h-full w-full object-cover"
+                  src={user.profilepicture}
+                  alt="Pfp"
+                />
               </div>
 
               <h1 className="text-[#CFD9FC] font-thin text-xl">

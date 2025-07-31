@@ -19,7 +19,6 @@ export function AuthProvider({ children }) {
           {},
           { withCredentials: true }
         );
-        console.log("testingworking", res.data);
         login(res.data.user, res.data.accessToken); // Your login logic here
       } catch (err) {
         console.log("Refresh failed", err);
@@ -27,7 +26,6 @@ export function AuthProvider({ children }) {
       }
     };
     getNewAccessToken();
-    console.log("testing user to make sure logined in " + user);
     setLoading(false); // done loading at this point
   }, []);
 

@@ -44,11 +44,11 @@ const FilterButton = ({ currentFilter, onChange }) => {
         <button
           className="w-full py-2 rounded-md  px-4 text-white text-left hover:bg-[#6d82da]"
           onClick={() => {
-            onChange("Newest");
+            onChange("Explore");
             setOpenFilter(false);
           }}
         >
-          Newest
+          Explore
         </button>
         <button
           className="w-full py-2 rounded-md  px-4 text-white text-left hover:bg-[#6d82da]"

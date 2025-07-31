@@ -65,7 +65,7 @@ const PostComponent = ({
         </div>
 
         {/* Main content area with flex-grow */}
-        <div className="flex flex-col justify-between h-full p-4">
+        <div className="flex flex-col justif[Violation] 'close' handler took 1948100msy-between h-full p-4">
           <h1 className="text-[#CFD9FC]">{captionText}</h1>
 
           {/* Buttons stick to bottom */}
