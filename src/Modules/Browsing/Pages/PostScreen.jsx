@@ -51,9 +51,9 @@ const PostScreen = () => {
     return <div className="text-white">no posts found</div>
   }
   return (
-    <div className="w-full  pl-7 pr-7 items-center justify-center flex flex-col">
+    <div className="w-full mb-5 pl-7 pr-7 items-center justify-center flex flex-col">
       <div
-        className={` h-full flex flex-col gap-2 md:w-[900px] justify-center 
+        className={` h-full flex flex-col w-[85%] gap-2 md:w-[75%] justify-center 
         `}
       >
         <ReturnButton></ReturnButton>

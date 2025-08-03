@@ -121,12 +121,12 @@ const QuickPost = () => {
             type="file"
             accept="image/*"
             multiple
-            id="BannerimageInput"
+            id="PostImageInput"
             onChange={handlePostImage}
             className="hidden"
           />
 
-          <label htmlFor="BannerimageInput" className="cursor-pointer">
+          <label htmlFor="PostImageInput" className="cursor-pointer">
             <div
               onClick={() => {
                 setFocusState(true);

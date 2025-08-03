@@ -10,29 +10,33 @@ import ChatPage from "./Modules/Chat/Page/ChatPage";
 import { AuthProvider } from "./Modules/Auth/Context/authContext";
 import { AccountProvider } from "./Modules/Account/context/accountContext";
 import { PostProvider } from "./Modules/Browsing/context/PostContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 // import SignUpPage from "./Pages/SignUpPage"; // Ensure this component exists
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <AccountProvider>
-          <PostProvider>
-            <Routes>
-              <Route path="/:page" element={<AuthoPage />} />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <AccountProvider>
+            <PostProvider>
+              <Routes>
+                <Route path="/:page" element={<AuthoPage />} />
 
-              <Route element={<MainLayout />}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/post/:postid" element={<PostScreen />} />
-                <Route path="/profile/:username" element={<Account />} />
-                <Route path="/chat/:userId" element={<ChatPage />} />
-              </Route>
-            </Routes>
-          </PostProvider>
-        </AccountProvider>
-      </AuthProvider>
-    </BrowserRouter>
+                <Route element={<MainLayout />}>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/post/:postid" element={<PostScreen />} />
+                  <Route path="/profile/:username" element={<Account />} />
+                  <Route path="/chat/:userId" element={<ChatPage />} />
+                </Route>
+              </Routes>
+            </PostProvider>
+          </AccountProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 function MainLayout() {

@@ -41,7 +41,7 @@ const PostComponent = ({
       <div
         className={`bg-[#20284E]   flex flex-col ${
           postType === "ImagePost"
-            ? "rounded-b-md md:rounded-r-md h-full  md:rounded-l-none w-[450px] md:w-[35%] "
+            ? "rounded-b-md md:rounded-r-md h-full  md:rounded-l-none w-[85%] md:w-[75%] "
             : "rounded-md w-[100%] h-fit "
         }`}
       >

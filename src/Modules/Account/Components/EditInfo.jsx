@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useAuth } from "../../Auth/Context/authContext";
+import { useNavigate } from "react-router-dom";
 
 const EditInfo = ({ setOpenEditInfo }) => {
   const { user, backendUrl } = useAuth();
@@ -15,6 +16,7 @@ const EditInfo = ({ setOpenEditInfo }) => {
   const [banner, setBanner] = useState(NullPfp);
   const [profilePictureFile, setProfilePictureFile] = useState(null);
   const [bannerPictureFile, setBannerPictureFile] = useState(null);
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -34,24 +36,25 @@ const EditInfo = ({ setOpenEditInfo }) => {
 
   const formik = useFormik({
     initialValues: {
-      enableReinitialize: true,
-      username: user?.username || "",
-      email: user?.email || "",
+      username: user.username,
+      email: user.email,
       password: "",
       confirmPassword: "",
+      description: user?.description,
     },
     validationSchema: Yup.object({
-      username: Yup.string().min(6).max(10),
+      username: Yup.string().min(6, "Minimum 6").max(10, "Max 10"),
+      description: Yup.string().min(6, "Minimum 1").max(10, "Max 100"),
       email: Yup.string().email("Invalid email"),
       password: Yup.string().min(6, "Minimum 6 characters"),
-      confirmPassword: Yup.string()
-        .min(6, "Minimum 6 characters")
-        .required(changePassword),
+      confirmPassword: Yup.string().min(6, "Minimum 6 characters"),
     }),
     onSubmit: async (values) => {
+      console.log(user.username);
+
       try {
         const formData = new FormData();
-
+        console.log(user.username);
         if (profilePictureFile) {
           formData.append("profilePicture", profilePictureFile);
         }
@@ -59,27 +62,33 @@ const EditInfo = ({ setOpenEditInfo }) => {
         if (bannerPictureFile) {
           formData.append("bannerPicture", bannerPictureFile);
         }
-
+        if (values.description) {
+          formData.append("description", values.description);
+        }
         formData.append("username", values.username);
+
         formData.append("email", values.email);
         if (changePassword) {
           formData.append("password", values.password);
           formData.append("confirmPassword", values.confirmPassword);
         }
+        for (let pair of formData.entries()) {
+          console.log(pair[0] + ":", pair[1]);
+        }
+        console.log("Profile updated:", values.description);
 
-        const response = await axios.post(
-          `${backendUrl}/api/auth/updateInformation/${user._id}`,
+        const response = await axios.patch(
+          `${backendUrl}/api/account/updateInformation/${user._id}`,
           formData,
           {
             headers: {
               Authorization: `Bearer ${user?.token}`,
-              "Content-Type": "multipart/form-data",
             },
             withCredentials: true,
           }
         );
-
-        console.log("Profile updated:", response.data);
+        navigate(`/profile/${response.data.user.username}`, { replace: true });
+        window.location.reload();
         setOpenEditInfo(false);
       } catch (error) {
         if (error.response) {
@@ -116,7 +125,6 @@ const EditInfo = ({ setOpenEditInfo }) => {
                 value={formik.values.username}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                text="Username"
                 placeholder="username"
               />
               <TextinputOuterDesign
@@ -124,32 +132,34 @@ const EditInfo = ({ setOpenEditInfo }) => {
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                text="Email"
+                type="Email"
                 placeholder="Email"
               />
               <TextinputOuterDesign
                 name="password"
-                type="password"
                 onFocus={() => setChangePassword(true)}
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                text="Password"
                 placeholder="Password"
               />
               <div className={changePassword ? "visible" : "invisible"}>
                 <TextinputOuterDesign
                   name="confirmPassword"
-                  type="password"
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  text="Confirm Password"
                   placeholder="Password"
                 />
               </div>
             </div>
-
+            <TextinputOuterDesign
+              name="description"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              placeholder="Description"
+            />
             <div className="flex gap-5 w-full">
               <div className="relative h-f">
                 <h1 className="text-[#E3DDF7] font-medium text-lg pb-3">

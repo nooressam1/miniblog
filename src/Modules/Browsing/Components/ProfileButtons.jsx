@@ -4,7 +4,12 @@ import { useAuth } from "../../Auth/Context/authContext";
 import axios from "axios";
 import { useAccount } from "../../Account/context/accountContext";
 
-const ProfileButtons = ({ userAuthenticated, setOpenEditInfo }) => {
+const ProfileButtons = ({
+  userAuthenticated,
+  setOpenEditInfo,
+  setOpenFollowers,
+  setSwitchOpenFollowers,
+}) => {
   const [followingAccount, setFollowingAccount] = useState(false);
   const [followerCount, setFollowerCount] = useState(null);
   const [followingCount, setFollowingCount] = useState(null);
@@ -16,6 +21,7 @@ const ProfileButtons = ({ userAuthenticated, setOpenEditInfo }) => {
   useEffect(() => {
     setFollowerCount(userInfo?.followers?.length);
     setFollowingCount(userInfo?.following?.length);
+    console.log(userInfo.followers);
     if (
       userInfo?.followers?.some((id) => id.toString() === user?._id.toString())
     ) {
@@ -27,8 +33,8 @@ const ProfileButtons = ({ userAuthenticated, setOpenEditInfo }) => {
     try {
       if (followingAccount) {
         const response = await axios.put(
-          `${backendUrl}/api/account/unfollowUser/${userInfo.username}`,
-          { unfollowerUsername: user.username }
+          `${backendUrl}/api/account/unfollowUser/${userInfo.username}`, // the opened users account
+          { unfollowerUsername: user.username } // current user
         );
         await fetchUser(userInfo.username);
         setFollowerCount(userInfo?.followers?.length || 0);
@@ -61,10 +67,22 @@ const ProfileButtons = ({ userAuthenticated, setOpenEditInfo }) => {
             {userInfo.username}
           </div>
           <div className="flex md:justify-center gap-4 items-center">
-            <h1 className="text-white text-md font-sm w-fit whitespace-nowrap">
+            <h1
+              className="text-white cursor-pointer text-md font-sm w-fit whitespace-nowrap"
+              onClick={() => {
+                setOpenFollowers((prev) => !prev);
+                setSwitchOpenFollowers("Followers");
+              }}
+            >
               {followerCount} Followers
             </h1>
-            <h1 className="text-white text-md font-sm whitespace-nowrap">
+            <h1
+              onClick={() => {
+                setOpenFollowers((prev) => !prev);
+                setSwitchOpenFollowers("Following");
+              }}
+              className="text-white text-md  cursor-pointer font-sm whitespace-nowrap"
+            >
               {followingCount} Following
             </h1>
             {userAuthenticated ? (

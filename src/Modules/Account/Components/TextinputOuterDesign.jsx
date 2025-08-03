@@ -1,13 +1,24 @@
 import React from "react";
 
-const TextinputOuterDesign = ({ onChangeText, text, placeholder,onFocus }) => {
+const TextinputOuterDesign = ({
+  onChange,
+  onBlur,
+  placeholder,
+  onFocus,
+  name,
+  value,
+  type = "text",
+}) => {
   return (
     <div className="w-full ">
       <input
-        type="text"
+        type={type}
+        id={name}
+        name={name}
         className="bg-transparent w-full p-3 border-white border-2 text-white rounded-md"
-        onChangeText={onChangeText}
-        value={text}
+        onChange={onChange}
+        onBlur={onBlur}
+        value={value}
         onFocus={onFocus}
         placeholder={placeholder}
       />{" "}

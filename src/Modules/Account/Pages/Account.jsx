@@ -6,11 +6,12 @@ import Masonry from "react-masonry-css";
 import TextPost from "../../Shared/Components/TextPost";
 import { useParams } from "react-router-dom";
 import EditInfo from "../Components/EditInfo";
+import FollowerPopUp from "../Components/FollowerPopUp";
+
 import ProfileButtons from "../../Browsing/Components/ProfileButtons";
 import axios from "axios";
 import { useAuth } from "../../Auth/Context/authContext";
 import { useAccount } from "../context/accountContext";
-
 
 const breakpointColumnsObj = {
   default: 3,
@@ -19,11 +20,14 @@ const breakpointColumnsObj = {
 };
 
 const Account = ({ UserName }) => {
-  const { user, savedToken,backendUrl } = useAuth();
+  const { user, backendUrl } = useAuth();
   const { fetchUser, userInfo } = useAccount();
 
   const [userAuthenticated, setUserAuthenticated] = useState(false);
   const [openEditInfo, setOpenEditInfo] = useState(false);
+  const [openFollowers, setOpenFollowers] = useState(false);
+  const [switchOpenFollowers, setSwitchOpenFollowers] = useState("Followers");
+
   const [posts, setPosts] = useState([]);
 
   const [filterChoice, setFilterChoice] = useState("All");
@@ -33,13 +37,16 @@ const Account = ({ UserName }) => {
 
   useEffect(() => {
     fetchUser(username);
+    console.log("testing" + user);
   }, [decodedUsername]);
 
   useEffect(() => {
     if (userInfo && user && user.username === userInfo.username) {
       setUserAuthenticated(true);
+    } else {
+      setUserAuthenticated(false);
     }
-  }, [userInfo, decodedUsername]);
+  }, [userInfo, user]);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -69,12 +76,12 @@ const Account = ({ UserName }) => {
   if (!userInfo) return <div>User not found</div>;
 
   return (
-    <div className="h-full w-full justify-center items-center flex flex-col">
+    <div className="h-full w-full justify-center items-center  flex flex-col">
       <div className="w-full h-[40vh] md:h-[50vh]">
         <img
           className="w-full h-full object-cover"
           alt="Banner"
-          src={userInfo.banner}
+          src={`http://localhost:5003${userInfo.banner}`}
         />
       </div>
 
@@ -84,13 +91,15 @@ const Account = ({ UserName }) => {
             <img
               className="w-full h-full object-cover rounded-full  object-center"
               alt="pfp"
-              src={userInfo.profilepicture}
+              src={`http://localhost:5003${userInfo.profilepicture}`}
             />
           </div>
 
           <ProfileButtons
+            setOpenFollowers={setOpenFollowers}
             setOpenEditInfo={setOpenEditInfo}
             userAuthenticated={userAuthenticated}
+            setSwitchOpenFollowers={setSwitchOpenFollowers}
           ></ProfileButtons>
         </div>
       </div>
@@ -112,18 +121,22 @@ const Account = ({ UserName }) => {
           {posts.map((post) => (
             <TextPost
               key={post.id}
-              postid={post._id}
-              userName={post.user.username}
-              captionText={post.description}
-              profilePicture={post.user.profilepicture}
-              postType={post.posttype}
-              postPhoto={post.postimages[0]}
+              user={post.user}
+              postinfo={post}
               isOwner={userAuthenticated}
             />
           ))}
         </Masonry>
       </div>
       {openEditInfo && <EditInfo setOpenEditInfo={setOpenEditInfo}> </EditInfo>}
+      {openFollowers && (
+        <FollowerPopUp
+          switchOpenFollowers={switchOpenFollowers}
+          setOpenFollowers={setOpenFollowers}
+        >
+          {" "}
+        </FollowerPopUp>
+      )}
     </div>
   );
 };

@@ -11,7 +11,7 @@ const Navbar = () => {
       <div className="w-full h-24 pl-8 pr-5 p-2">
         <div className="flex w-full h-full justify-between items-center">
           <Link to="/">
-            <h1 className="text-[#CFD9FC] font-bold text-2xl">EmberPages</h1>
+            <h1 className="text-[#CFD9FC] font-bold text-2xl">Z E L O</h1>
           </Link>
           <div className="grid h-full  grid-cols-[50px_1fr] justify-center items-center">
             <div className="h-2/5 w-2/3">
@@ -35,7 +35,7 @@ const Navbar = () => {
     <div className="w-full h-24 pl-8 pr-5 p-2">
       <div className="flex w-full h-full justify-between items-center">
         <Link to="/">
-          <h1 className="text-[#CFD9FC] font-bold text-2xl">EmberPages</h1>
+          <h1 className="text-[#CFD9FC] font-bold text-3xl">Z E L O</h1>
         </Link>
         <div className="grid h-full  grid-cols-[50px_1fr] justify-center items-center">
           <div className="h-2/5 w-2/3">
@@ -48,12 +48,12 @@ const Navbar = () => {
               <div className="flex  justify-center items-center h-10 w-10">
                 <img
                   className="rounded-3xl cursor-pointer h-full w-full object-cover"
-                  src={user.profilepicture}
+                  src={`http://localhost:5003${user.profilepicture}`}
                   alt="Pfp"
                 />
               </div>
 
-              <h1 className="text-[#CFD9FC] font-thin text-xl">
+              <h1 className="text-[#CFD9FC] capitalize font-thin text-xl">
                 {user.username}
               </h1>
             </div>
