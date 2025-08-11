@@ -7,7 +7,7 @@ const PostContext = createContext();
 export function PostProvider({ children }) {
   const [replyTo, setReplyTo] = useState("Post"); // null or it will be which post or commment
   const { user, savedToken, backendUrl } = useAuth();
-
+  const [commentCount, setCommentCount] = useState(0);
   const [openReplyTo, setOpenReplyTo] = useState(false); // Open Respond Component
   const [postID, setpostID] = useState("");
 
@@ -35,20 +35,28 @@ export function PostProvider({ children }) {
     SetReplyingParentCommentId(commentId);
     setRepliedtoName(commenterName);
   };
-  const FetchComments = async (postid) => {
+  
+  const FetchComments = async (postid, allcomments) => {
     try {
       if (!postid) return;
 
       const res = await axios.get(
-        `${backendUrl}/api/comment/fetchComments/${postid}`
+        `${backendUrl}/api/comment/fetchComments/${postid}`,
+        { params: { getAll: allcomments } }
       );
-
+      console.log("testingcomments")
       setCommentsData(res.data);
     } catch (err) {
       console.log("failed to get comments", err);
     }
   };
 
+  const fetchCommentCount = async (postId) => {
+    const res = await axios.get(
+      `${backendUrl}/api/comment/fetchCommentCount/${postId}`
+    );
+    setCommentCount(res.data);
+  };
   const fetchPostData = async (postid) => {
     try {
       if (!postid) return;
@@ -97,7 +105,9 @@ export function PostProvider({ children }) {
         FetchParentComments,
         replyTo,
         setPostData,
-        setCommentsData
+        setCommentsData,
+        fetchCommentCount,
+        commentCount,
       }}
     >
       {children}

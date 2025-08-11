@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-const PostFilter = ({ setFilterOption }) => {
-  const [filterChoice, setFilterChoice] = useState("All");
-  useEffect(() => {
-    setFilterOption(filterChoice);
-  }, [filterChoice]);
+const PostFilter = ({ setFilterOption, userAuthenticated, filterChoice }) => {
+ 
   return (
     <div className="w-[95%] flex flex-col gap-3 mt-4">
       <div className="flex  space-x-3">
@@ -14,7 +11,7 @@ const PostFilter = ({ setFilterOption }) => {
               ? " hover:bg-[#a92dad] bg-[#A30BA8]"
               : "bg-[#7E96F6]  "
           }`}
-          onClick={() => setFilterChoice("All")}
+          onClick={() => setFilterOption("All")}
         >
           <h1 className="text-white   font-medium text-sm md:text-base ">
             All
@@ -22,11 +19,11 @@ const PostFilter = ({ setFilterOption }) => {
         </button>{" "}
         <button
           className={`rounded-md  md:w-28 capitalize  p-2  flex justify-center items-center ${
-            filterChoice === "Images"
+            filterChoice === "ImagePost"
               ? " hover:bg-[#a92dad] bg-[#A30BA8]"
               : "bg-[#7E96F6]  "
           }`}
-          onClick={() => setFilterChoice("Images")}
+          onClick={() => setFilterOption("ImagePost")}
         >
           <h1 className="text-white   font-medium text-sm md:text-base ">
             Images
@@ -34,18 +31,32 @@ const PostFilter = ({ setFilterOption }) => {
         </button>
         <button
           className={`rounded-md  md:w-28 capitalize  p-2  flex justify-center items-center ${
-            filterChoice === "Pages"
+            filterChoice === "textPost"
               ? " hover:bg-[#a92dad] bg-[#A30BA8]"
               : "bg-[#7E96F6]  "
           }`}
-          onClick={() => setFilterChoice("Pages")}
+          onClick={() => setFilterOption("textPost")}
         >
           <h1 className="text-white   font-medium text-sm md:text-base ">
             Pages
           </h1>
         </button>
+        {userAuthenticated === true && (
+          <button
+            className={`rounded-md  md:w-28 capitalize  p-2  flex justify-center items-center ${
+              filterChoice === "Liked"
+                ? " hover:bg-[#a92dad] bg-[#A30BA8]"
+                : "bg-[#7E96F6]  "
+            }`}
+            onClick={() => setFilterOption("Liked")}
+          >
+            <h1 className="text-white   font-medium text-sm md:text-base ">
+              Liked
+            </h1>
+          </button>
+        )}
       </div>
-      <div className="w-full bg-[#6074c6] h-[0.5px]"></div>
+      <div className="w-full bg-[#373c50]  h-[0.5px]"></div>
     </div>
   );
 };

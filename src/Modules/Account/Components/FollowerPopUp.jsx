@@ -5,16 +5,18 @@ import axios from "axios";
 import { useAuth } from "../../Auth/Context/authContext";
 import AccountBox from "./AccountBox";
 
-const FollowerPopUp = ({ setOpenFollowers, switchOpenFollowers }) => {
+const FollowerPopUp = ({ setOpenFollowers, switchOpenFollowers, userInfo }) => {
   const { user, backendUrl } = useAuth();
   const queryClient = useQueryClient();
 
   const fetchUsers = async () => {
     const endpoint =
       switchOpenFollowers === "Followers"
-        ? `${backendUrl}/api/account/allFollowersUsers/${user._id}`
-        : `${backendUrl}/api/account/allFollowingUsers/${user._id}`;
+        ? `${backendUrl}/api/account/allFollowersUsers/${userInfo._id}`
+        : `${backendUrl}/api/account/allFollowingUsers/${userInfo._id}`;
+
     const response = await axios.get(endpoint);
+    console.log("hm following", response.data);
     return response.data;
   };
 
@@ -30,9 +32,12 @@ const FollowerPopUp = ({ setOpenFollowers, switchOpenFollowers }) => {
 
   const removeUserMutation = useMutation({
     mutationFn: (userToRemove) =>
-      axios.patch(`${backendUrl}/api/account/removePersonalFollower/${user._id}`, {
-        _id: userToRemove._id,
-      }),
+      axios.patch(
+        `${backendUrl}/api/account/removePersonalFollower/${user._id}`,
+        {
+          _id: userToRemove._id,
+        }
+      ),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["followersorFollowing", switchOpenFollowers, user._id],
@@ -45,9 +50,12 @@ const FollowerPopUp = ({ setOpenFollowers, switchOpenFollowers }) => {
 
   const unfollowUserMutation = useMutation({
     mutationFn: (userToUnfollow) =>
-      axios.put(`${backendUrl}/api/account/unfollowUser/${userToUnfollow.username}`, {
-        unfollowerUsername: user.username,
-      }),
+      axios.put(
+        `${backendUrl}/api/account/unfollowUser/${userToUnfollow.username}`,
+        {
+          unfollowerUsername: user.username,
+        }
+      ),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["followersorFollowing", switchOpenFollowers, user._id],
@@ -70,9 +78,9 @@ const FollowerPopUp = ({ setOpenFollowers, switchOpenFollowers }) => {
     <>
       <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-40"></div>
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="bg-[#090B14] p-7 rounded-lg w-[90vw] md:w-[60vw] max-h-[95vh] overflow-y-auto">
+        <div className="bg-[#090B14]  p-7 rounded-lg w-[90vw] md:w-[60vw] max-h-[95vh] overflow-y-auto">
           <div className="flex justify-between">
-            <h1 className="text-[#E3DDF7] font-medium text-2xl">
+            <h1 className="text-[#E3DDF7] mb-2 font-medium text-2xl">
               {switchOpenFollowers === "Followers" ? "Followers" : "Following"}
             </h1>
             <button onClick={() => setOpenFollowers((prev) => !prev)}>

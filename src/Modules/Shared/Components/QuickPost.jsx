@@ -11,7 +11,7 @@ const QuickPost = () => {
   const [saveDescription, setSaveDescription] = useState("");
   const backendUrl = "http://localhost:5003";
   const { savedToken } = useAuth();
-  
+
   const handlePostImage = (e) => {
     const files = Array.from(e.target.files);
     const imageURLs = files.map((file) => URL.createObjectURL(file));
@@ -34,8 +34,8 @@ const QuickPost = () => {
         `${backendUrl}/api/post/uploadpost`,
         formData,
         {
+          withCredentials: true, // ✅ important for sending cookies
           headers: {
-            Authorization: `Bearer ${savedToken}`, // ✅ make sure token exists
             "Content-Type": "multipart/form-data",
           },
         }

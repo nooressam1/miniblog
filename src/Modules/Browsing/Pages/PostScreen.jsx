@@ -26,6 +26,7 @@ const PostScreen = () => {
     replyTo,
     setPostData,
     setCommentsData,
+    fetchCommentCount,
   } = usePost();
 
   useEffect(() => {
@@ -39,16 +40,18 @@ const PostScreen = () => {
 
     setPostID(postid);
   }, [postid]);
+
   useEffect(() => {
     const loadData = async () => {
       fetchPostData(postid);
-      FetchComments(postid);
+      FetchComments(postid, false);
+      fetchCommentCount(postid);
     };
 
     loadData();
   }, [postid]);
   if (!postid || postid === "undefined") {
-    return <div className="text-white">no posts found</div>
+    return <div className="text-white">no posts found</div>;
   }
   return (
     <div className="w-full mb-5 pl-7 pr-7 items-center justify-center flex flex-col">
@@ -58,14 +61,7 @@ const PostScreen = () => {
       >
         <ReturnButton></ReturnButton>
 
-        <PostComponent
-          postType={postData.posttype}
-          commentAction={handleReplyToPost}
-          captionText={postData.description}
-          userName={postData.user?.username}
-          profilePicture={postData.user?.profilepicture}
-          postPhoto={postData.postimages}
-        ></PostComponent>
+        <PostComponent commentAction={handleReplyToPost}></PostComponent>
         <div className="flex flex-col w-full justify-center items-center mt-4 gap-4">
           {openReplyTo && (
             <ReplyingComment

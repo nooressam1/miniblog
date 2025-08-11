@@ -8,10 +8,21 @@ import { useAuth } from "../../Auth/Context/authContext";
 const TextPost = ({ postinfo, Postuser, isOwner, refetchPosts }) => {
   const { user, backendUrl } = useAuth();
   const queryClient = useQueryClient();
-
+  const [commentLength, setCommentLength] = useState(0);
   const [liked, setLiked] = useState(false);
 
-  // Detect if current user already liked this post
+  useEffect(() => {
+    fetchComments();
+  }, [postinfo, Postuser]);
+
+  const fetchComments = async () => {
+    const comments = await axios.get(
+      `${backendUrl}/api/comment/fetchComments/${postinfo._id}`,
+      { params: { getAll: true } }
+    );
+    setCommentLength(comments.data.length);
+  };
+
   useEffect(() => {
     if (postinfo.likes.includes(user?._id)) {
       setLiked(true);
@@ -82,9 +93,8 @@ const TextPost = ({ postinfo, Postuser, isOwner, refetchPosts }) => {
             </button>
           )}
           <Link to={`/post/${postinfo._id}`}>
-            <button className="rounded-xl gap-1 text-[#CFD9FC] flex w-9 h-8 text-center justify-center items-center">
-              <IconMessage2 stroke={2} color="#CFD9FC" />{" "}
-              {postinfo.comments.length}
+            <button className="rounded-xl gap-1 text-[#CFD9FC] flex  h-8 text-center justify-center items-center">
+              <IconMessage2 stroke={2} color="#CFD9FC" /> {commentLength}
             </button>
           </Link>
         </div>

@@ -12,6 +12,7 @@ import ProfileButtons from "../../Browsing/Components/ProfileButtons";
 import axios from "axios";
 import { useAuth } from "../../Auth/Context/authContext";
 import { useAccount } from "../context/accountContext";
+import { useQuery } from "@tanstack/react-query";
 
 const breakpointColumnsObj = {
   default: 3,
@@ -28,16 +29,41 @@ const Account = ({ UserName }) => {
   const [openFollowers, setOpenFollowers] = useState(false);
   const [switchOpenFollowers, setSwitchOpenFollowers] = useState("Followers");
 
-  const [posts, setPosts] = useState([]);
-
   const [filterChoice, setFilterChoice] = useState("All");
 
   const { username } = useParams();
   const decodedUsername = decodeURIComponent(username); // decode %20 into space
+  const fetchPosts = async ({ queryKey }) => {
+    const [, usernameFromKey, filter] = queryKey;
+
+    try {
+      if (filterChoice !== "Liked") {
+        const res = await axios.get(
+          `${backendUrl}/api/post/getposts/${usernameFromKey}`,
+          {
+            params: { filter },
+          }
+        );
+        console.log(res);
+
+        return res.data || [];
+      } else {
+        const res = await axios.get(
+          `${backendUrl}/api/account/fetchLikedPosts/${user._id}`
+        );
+
+        return res.data || [];
+      }
+
+      return [];
+    } catch (errr) {
+      console.log("failed to get posts", errr);
+      return [];
+    }
+  };
 
   useEffect(() => {
-    fetchUser(username);
-    console.log("testing" + user);
+    fetchUser(decodedUsername);
   }, [decodedUsername]);
 
   useEffect(() => {
@@ -47,31 +73,17 @@ const Account = ({ UserName }) => {
       setUserAuthenticated(false);
     }
   }, [userInfo, user]);
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await axios.get(
-          `${backendUrl}/api/post/getposts/${decodedUsername}`
-        );
 
-        let filteredPosts = res.data;
-        if (filterChoice === "Images") {
-          filteredPosts = filteredPosts.filter(
-            (post) => post.posttype === "ImagePost"
-          );
-        } else if (filterChoice === "Pages") {
-          filteredPosts = filteredPosts.filter(
-            (post) => post.posttype === "textPost"
-          );
-        }
-
-        setPosts(filteredPosts);
-      } catch (errr) {
-        console.log("failed to get posts", errr);
-      }
-    };
-    fetchPosts();
-  }, [filterChoice, decodedUsername]);
+  const {
+    data: Posts = [],
+    isLoading: isPostsLoading,
+    error: postsError,
+    refetch: refetchPosts,
+  } = useQuery({
+    queryKey: ["accountPosts", decodedUsername, filterChoice],
+    queryFn: fetchPosts,
+    enabled: !!decodedUsername,
+  });
 
   if (!userInfo) return <div>User not found</div>;
 
@@ -106,24 +118,39 @@ const Account = ({ UserName }) => {
 
       <div className="w-full flex flex-col mt-5  items-center">
         {userAuthenticated && <QuickPost />}
-        <PostFilter setFilterOption={setFilterChoice} />
-        {posts < 1 && (
-          <h1 className="text-gray-600 ml-5 mt-4 text-md font-sm ">
-            No Posts Available{" "}
-          </h1>
+        <PostFilter
+          setFilterOption={setFilterChoice}
+          userAuthenticated={userAuthenticated}
+          filterChoice={filterChoice}
+        />
+        {isPostsLoading && (
+          <div className="text-gray-400 mt-4">Loading posts...</div>
+        )}
+        {postsError && (
+          <div className="text-red-500 mt-4">Failed to load posts.</div>
         )}
 
+        {!isPostsLoading && Posts.length < 1 && (
+          <h1 className="text-gray-600  ml-5 mt-10 text-md font-sm">
+            No Posts Available
+          </h1>
+        )}
         <Masonry
           breakpointCols={breakpointColumnsObj}
           className="flex w-full gap-8 p-8"
           columnClassName="space-y-8"
         >
-          {posts.map((post) => (
+          {Posts.map((post) => (
             <TextPost
               key={post.id}
-              user={post.user}
+              Postuser={post.user}
               postinfo={post}
-              isOwner={userAuthenticated}
+              isOwner={
+                filterChoice === "Liked"
+                  ? !userAuthenticated
+                  : userAuthenticated
+              }
+              refetchPosts={refetchPosts}
             />
           ))}
         </Masonry>
@@ -133,6 +160,7 @@ const Account = ({ UserName }) => {
         <FollowerPopUp
           switchOpenFollowers={switchOpenFollowers}
           setOpenFollowers={setOpenFollowers}
+          userInfo={userInfo}
         >
           {" "}
         </FollowerPopUp>

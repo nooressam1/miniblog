@@ -18,7 +18,7 @@ const ReplyingComment = ({
   replyingParentCommentId,
   repliedtoName,
   buttonAction,
-  FetchComments
+  FetchComments,
 }) => {
   const [focusState, setFocusState] = useState(false);
   const textareaRef = useRef(null);
@@ -35,12 +35,10 @@ const ReplyingComment = ({
           parentCommentId: replyingParentCommentId,
         },
         {
-          headers: {
-            Authorization: `Bearer ${savedToken}`,
-          },
+          withCredentials: true, // ✅ important for sending cookies
         }
       );
-      FetchComments();
+      FetchComments(postid);
       console.log("Comment posted successfully", res.data);
     } catch (err) {
       console.log("Failed to post comment", err);
@@ -75,7 +73,10 @@ const ReplyingComment = ({
       <div className="flex items-end justify-end  h-full ">
         <div className="flex gap-2 ">
           <button
-            onClick={() =>{buttonAction(); createComment()}}
+            onClick={() => {
+              buttonAction();
+              createComment();
+            }}
             className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
           >
             <IconSend2 stroke={2} color="white" />

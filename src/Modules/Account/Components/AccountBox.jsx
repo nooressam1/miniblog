@@ -2,14 +2,17 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const AccountBox = ({ User, operation }) => {
+  useEffect(() => {
+    console.log(`http://localhost:5003${User.profilepicture}`);
+  }, []);
   return (
-    <div className="flex w-[95%] justify-between  items-center">
-      <div className="flex items-center">
+    <div className="flex w-[95%] mb-2 justify-between  items-center">
+      <div className="flex items-center gap-4">
         <div className="h-10 w-10">
           <img
             className="rounded-3xl cursor-pointer h-full w-full object-cover"
             src={`http://localhost:5003${User.profilepicture}
-}`}
+`}
             alt="Pfp"
           />
         </div>

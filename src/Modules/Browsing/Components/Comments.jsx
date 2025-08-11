@@ -31,19 +31,21 @@ const Comments = ({ comment }) => {
     handleReplyToPost,
     handleReplyToComment,
     FetchParentComments,
-    nestedComments
+    nestedComments,
   } = usePost();
- useEffect(() => {
+  
+  useEffect(() => {
     FetchParentComments(comment);
   }, [commentsData]);
-
-
 
   return (
     <div className="bg-[#20284E]   items-top w-full justify-between gap-3 rounded-md  p-3 pt-4 ">
       <>
         <>
-          <CommentInfo comment={comment}></CommentInfo>
+          <CommentInfo
+            comment={comment}
+            nestedCommentsCount={nestedComments[comment._id]?.length}
+          ></CommentInfo>
           {nestedComments[comment._id]?.length > 0 && (
             <div className="pl-7 flex flex-col gap-2 ">
               <button
