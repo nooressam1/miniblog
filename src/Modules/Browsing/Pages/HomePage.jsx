@@ -16,7 +16,21 @@ const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const filter = searchParams.get("filter") || "Explore";
+  const [displayText, setDisplayText] = useState("Explore");
 
+  useEffect(() => {
+    // Read URL filter only on first load
+    switch (filter) {
+      case "Trending":
+        setDisplayText("Trending");
+        break;
+      case "Following":
+        setDisplayText("Following");
+        break;
+      default:
+        setDisplayText("Explore");
+    }
+  }, []);
   const FetchPosts = useCallback(async () => {
     let endpoint;
     switch (filter) {
@@ -49,7 +63,7 @@ const HomePage = () => {
       <div className="flex justify-center items-start">
         <QuickPost />
         <FilterButton
-          currentFilter={filter}
+          currentFilter={displayText}
           onChange={(newFilter) => {
             const params = new URLSearchParams(searchParams);
             params.set("filter", newFilter);

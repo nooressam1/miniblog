@@ -14,6 +14,7 @@ import { usePost } from "../context/PostContext";
 const Comments = ({ comment }) => {
   const [likePost, setLikePost] = useState(false);
   const [moreComments, setMoreComments] = useState(false);
+
   const backendUrl = "http://localhost:5003";
   const { postid } = useParams();
 
@@ -37,7 +38,7 @@ const Comments = ({ comment }) => {
   useEffect(() => {
     FetchParentComments(comment);
   }, [commentsData]);
-
+  
   return (
     <div className="bg-[#20284E]   items-top w-full justify-between gap-3 rounded-md  p-3 pt-4 ">
       <>

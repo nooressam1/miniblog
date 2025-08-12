@@ -5,7 +5,7 @@ import axios from "axios";
 import { useAuth } from "../../Auth/Context/authContext";
 import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import dotImage from "../Images/dot.png";
+import dotImage from "../../Shared/Images/dot.png";
 const CommentInfo = ({
   comment,
   repliedComment = false,
@@ -15,6 +15,7 @@ const CommentInfo = ({
   const [savePost, setSavePost] = useState(false);
   const [onMouse, setOnMouse] = useState(false);
   const [onMouseButton, setOnMouseButton] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
 
   const { user, backendUrl } = useAuth();
 
@@ -32,6 +33,13 @@ const CommentInfo = ({
     handleReplyToPost,
     handleReplyToComment,
   } = usePost();
+  useEffect(() => {
+    if (user?._id && comment?.userId?._id) {
+      setAuthenticated(user._id === comment?.userId?._id);
+    } else {
+      setAuthenticated(false);
+    }
+  }, [user, comment]);
 
   useEffect(() => {
     if (comment.likes.includes(user?._id)) {
@@ -100,10 +108,10 @@ const CommentInfo = ({
       }}
       onMouseLeave={() => setOnMouse(false)}
     >
-      <div className="h-10 w-10">
+      <div className="h-10 w-10 mr-2">
         <img
           className="rounded-3xl cursor-pointer h-full w-full object-cover"
-          src={comment.userId.profilepicture}
+          src={`http://localhost:5003${comment.userId.profilepicture}`}
           alt="Pfp"
         />
       </div>
@@ -115,14 +123,11 @@ const CommentInfo = ({
           <h5 className="text-[#e4eaff71] text-sm cursor-pointer  capitalize ">
             {comment.createdAt}
           </h5>
-          {onMouse && (
+          {authenticated && onMouse && (
             <div
-              onMouseEnter={() => {
-                setOnMouseButton(true);
-              }}
-              onMouseLeave={() => {
-                setOnMouseButton(false);
-              }}
+              onMouseEnter={() => setOnMouseButton(true)}
+              onMouseLeave={() => setOnMouseButton(false)}
+              className="relative inline-block"
             >
               <div className="h-5 w-5">
                 <img
@@ -133,9 +138,7 @@ const CommentInfo = ({
               </div>
               {onMouseButton && (
                 <button
-                  onClick={() => {
-                    handleDelete();
-                  }}
+                  onClick={handleDelete}
                   className="bg-[#7E96F6] absolute p-1.5 text-white rounded-md text-sm"
                 >
                   Delete
