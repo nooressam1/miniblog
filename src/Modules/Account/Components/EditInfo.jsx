@@ -103,9 +103,9 @@ const EditInfo = ({ setOpenEditInfo }) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-40"></div>
+      <div className="fixed inset-0 bg-background bg-opacity-50 z-40"></div>
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="bg-[#090B14] p-7 rounded-lg w-[90vw] md:w-[60vw] max-h-[95vh] overflow-y-auto">
+        <div className="bg-background p-7 rounded-lg w-[90vw] md:w-[60vw] max-h-[95vh] overflow-y-auto">
           <div className="flex justify-between">
             <h1 className="text-[#E3DDF7] font-medium text-2xl">
               Edit Information
@@ -169,7 +169,11 @@ const EditInfo = ({ setOpenEditInfo }) => {
                   <img
                     className="w-full h-full object-cover rounded-2xl object-center"
                     alt="pfp"
-                    src={image}
+                    src={
+                      user.profilepicture.startsWith("http")
+                        ? user.profilepicture
+                        : `http://localhost:5003${user.profilepicture}`
+                    }
                   />
                   <div className="absolute bottom-0 right-0">
                     <input
@@ -196,7 +200,11 @@ const EditInfo = ({ setOpenEditInfo }) => {
                   <img
                     className="w-full h-full object-cover rounded-lg"
                     alt="Banner"
-                    src={banner}
+                    src={
+                      user.banner.startsWith("http")
+                        ? user.banner
+                        : `http://localhost:5003${user.banner}`
+                    }
                   />
                   <div className="absolute bottom-0 right-0">
                     <input
@@ -223,14 +231,21 @@ const EditInfo = ({ setOpenEditInfo }) => {
               <div className="flex w-fit gap-4">
                 <button
                   type="submit"
-                  className="text-white bg-[#A30BA8] whitespace-nowrap p-2 rounded-md h-12 w-full"
+                  disabled={
+                    !formik.dirty && !profilePictureFile && !bannerPictureFile
+                  }
+                  className={`text-white bg-secondary hover:bg-secondarylighter whitespace-nowrap p-2 rounded-md h-12 w-full ${
+                    !formik.dirty && !profilePictureFile && !bannerPictureFile
+                      ? "opacity-50 "
+                      : ""
+                  } `}
                 >
                   Save changes
                 </button>
                 <button
                   type="button"
                   onClick={() => setOpenEditInfo(false)}
-                  className="text-white bg-[#7E96F6] whitespace-nowrap p-2 rounded-md h-12 w-full"
+                  className="text-gray-400 bg-secondary whitespace-nowrap p-2 rounded-md h-12 w-full"
                 >
                   Cancel
                 </button>

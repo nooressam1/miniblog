@@ -19,11 +19,7 @@ const HomePage = () => {
   const [displayText, setDisplayText] = useState("Explore");
 
   useEffect(() => {
-    // Read URL filter only on first load
     switch (filter) {
-      case "Trending":
-        setDisplayText("Trending");
-        break;
       case "Following":
         setDisplayText("Following");
         break;
@@ -34,16 +30,13 @@ const HomePage = () => {
   const FetchPosts = useCallback(async () => {
     let endpoint;
     switch (filter) {
-      case "Trending":
-        endpoint = `${backendUrl}/api/feed/getTrendingPosts/${user._id}`;
-        break;
       case "Following":
         endpoint = `${backendUrl}/api/feed/getFollowingPosts/${user._id}`;
         break;
       default:
         endpoint = `${backendUrl}/api/feed/getExplorePosts/${user._id}`;
     }
-    const { data } = await axios.get(endpoint);
+    const { data } = await axios.get(endpoint, { withCredentials: true });
     return Array.isArray(data) ? data : [];
   }, [filter, user?._id]);
 
@@ -68,6 +61,7 @@ const HomePage = () => {
             const params = new URLSearchParams(searchParams);
             params.set("filter", newFilter);
             setSearchParams(params);
+            setDisplayText(newFilter);
           }}
         />
       </div>

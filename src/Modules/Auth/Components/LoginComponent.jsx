@@ -8,7 +8,7 @@ import { useAuth } from "../Context/authContext";
 import { Navigate, useNavigate } from "react-router-dom";
 const LoginComponent = ({ ChangePage }) => {
   const backendUrl = "http://localhost:5003";
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { login } = useAuth();
   const formik = useFormik({
@@ -30,8 +30,11 @@ const LoginComponent = ({ ChangePage }) => {
 
         console.log(response.data.user);
         login(response.data.user, response.data.accessToken);
-        navigate("/", { replace: true });
-
+        if (response.data.user.role === "Admin") {
+          navigate("/admin", { replace: true });
+        } else {
+          navigate("/", { replace: true });
+        }
       } catch (err) {
         const msg = err.response.data?.message;
         console.log(msg);
@@ -52,7 +55,7 @@ const LoginComponent = ({ ChangePage }) => {
       <h1 className="w-full text-center mb-2 font-bold text-3xl md:text-4xl text-[#CFD9FC]">
         Login
       </h1>
-      <h1 className="w-full text-center text-sm md:text-md text-[#B36ABE]">
+      <h1 className="w-full text-center text-sm md:text-md text-lightBlue">
         Please login to your account
       </h1>
       <div className="flex flex-col w-full mt-2 px-5">
@@ -78,6 +81,12 @@ const LoginComponent = ({ ChangePage }) => {
             condition={formik.touched.password && formik.errors.password}
           />
         </form>
+        {(formik.errors.username ||
+          (formik.touched.password && formik.errors.password)) && (
+          <p className="mt-2 w-full text-sm text-red-500">
+            {formik.errors.username || formik.errors.password}
+          </p>
+        )}
       </div>
       <div className="w-full ">
         <BlueButton Operation={formik.handleSubmit} title={"Login"} />
@@ -86,7 +95,7 @@ const LoginComponent = ({ ChangePage }) => {
         Don't have an account?{" "}
         <span
           onClick={ChangePage}
-          className="text-[#B36ABE] cursor-pointer hover:underline"
+          className="text-lightBlue cursor-pointer hover:underline"
         >
           Register
         </span>

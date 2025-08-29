@@ -5,6 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useAuth } from "../../Auth/Context/authContext";
 import dotImage from "../Images/dot.png";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime.js";
 
 const TextPost = ({ postinfo, Postuser, isOwner, refetchPosts }) => {
   const { user, backendUrl } = useAuth();
@@ -14,6 +16,19 @@ const TextPost = ({ postinfo, Postuser, isOwner, refetchPosts }) => {
   const [onMouse, setOnMouse] = useState(false);
   const [onMouseButton, setOnMouseButton] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [likeCount, setLikeCount] = useState(postinfo.likes?.length || 0);
+
+  dayjs.extend(relativeTime);
+  let timeString = dayjs(postinfo.postdate).fromNow();
+  timeString = timeString
+    .replace("minutes", "Mins")
+    .replace("minute", "Min")
+    .replace("hours", "Hrs")
+    .replace("hour", "Hr")
+    .replace("seconds", "Secs")
+    .replace("second", "Sec")
+    .replace(" ago", " ago")
+    .replace("a month", "1 month");
 
   useEffect(() => {
     fetchComments();
@@ -36,19 +51,24 @@ const TextPost = ({ postinfo, Postuser, isOwner, refetchPosts }) => {
   };
 
   useEffect(() => {
-    if (postinfo.likes.includes(user?._id)) {
+    if (postinfo.likes?.includes(user?._id)) {
       setLiked(true);
     }
+    setLikeCount(postinfo.likes?.length || 0);
   }, [postinfo.likes, user?._id]);
 
   const updateLikesMutation = useMutation({
     mutationFn: () =>
-      axios.patch(`${backendUrl}/api/post/updatelikes/${postinfo._id}`, {
-        userId: user?._id,
-      }),
+      axios.patch(
+        `${backendUrl}/api/post/updatelikes/${postinfo._id}`,
+        {
+          userId: user?._id,
+        },
+        { withCredentials: true }
+      ),
     onSuccess: () => {
       setLiked((prev) => !prev);
-      refetchPosts();
+      setLikeCount((prev) => (liked ? prev - 1 : prev + 1));
     },
     onError: (error) => {
       console.error("Failed to like post:", error);
@@ -81,9 +101,10 @@ const TextPost = ({ postinfo, Postuser, isOwner, refetchPosts }) => {
   const handleDelete = () => {
     deleteCommentMutation.mutate();
   };
+
   return (
     <div
-      className="bg-[#20284E] rounded-md"
+      className="bg-primary rounded-md"
       onMouseEnter={() => {
         setOnMouse(true);
       }}
@@ -99,7 +120,7 @@ const TextPost = ({ postinfo, Postuser, isOwner, refetchPosts }) => {
         </div>
       )}
       <div
-        className={`bg-[#7E96F6] items-center  p-3 ${
+        className={`bg-primarylighter items-center  p-3 ${
           postinfo.posttype === "ImagePost" ? "rounded-none" : "rounded-t-md"
         } flex justify-between`}
       >
@@ -107,7 +128,11 @@ const TextPost = ({ postinfo, Postuser, isOwner, refetchPosts }) => {
           <div className="h-10 w-10">
             <img
               className="rounded-3xl cursor-pointer h-full w-full object-cover"
-              src={`http://localhost:5003${Postuser?.profilepicture}`}
+              src={
+                Postuser?.profilepicture.startsWith("http")
+                  ? Postuser?.profilepicture
+                  : `http://localhost:5003${Postuser?.profilepicture}`
+              }
               alt="Pfp"
             />
           </div>
@@ -123,45 +148,49 @@ const TextPost = ({ postinfo, Postuser, isOwner, refetchPosts }) => {
             onMouseLeave={() => setOnMouseButton(false)}
             className="relative inline-block"
           >
-            <div className="h-5 w-5">
+            <div className="h-5 w-5 ">
               <img
                 className="rounded-3xl cursor-pointer h-full w-full object-cover"
                 src={dotImage}
                 alt="Pfp"
               />
+
+              {onMouseButton && (
+                <button
+                  onClick={handleDelete}
+                  className="bg-secondary absolute p-1.5 text-white rounded-md text-sm"
+                >
+                  Delete
+                </button>
+              )}
             </div>
-            {onMouseButton && (
-              <button
-                onClick={handleDelete}
-                className="bg-[#B36ABE] absolute p-1.5 text-white rounded-md text-sm"
-              >
-                Delete
-              </button>
-            )}
           </div>
         )}
       </div>
       <div className="p-4">
         <h1 className="text-[#CFD9FC]">{postinfo.description}</h1>
-        <div className="flex gap-2 justify-end items-center">
-          {!isOwner && (
-            <button
-              onClick={handleLike}
-              className="gap-1 text-[#CFD9FC] rounded-xl  flex w-[10%] h-full text-center justify-center items-center"
-            >
-              {liked ? (
-                <IconHeartFilled color="#CFD9FC" />
-              ) : (
-                <IconHeart stroke={2} color="#CFD9FC" />
-              )}
-              {postinfo.likes.length}
-            </button>
-          )}
-          <Link to={`/post/${postinfo._id}`}>
-            <button className="rounded-xl gap-1 text-[#CFD9FC] flex  h-8 text-center justify-center items-center">
-              <IconMessage2 stroke={2} color="#CFD9FC" /> {commentLength}
-            </button>
-          </Link>
+        <div className="flex justify-between items-center">
+          <h1 className="text-[#7d839f] text-sm"> {timeString}</h1>
+          <div className="flex gap-2 items-center">
+            {!isOwner && (
+              <button
+                onClick={handleLike}
+                className="gap-1 text-[#CFD9FC]  flex w-fit h-full text-center justify-center items-center"
+              >
+                {liked ? (
+                  <IconHeartFilled color="#CFD9FC" />
+                ) : (
+                  <IconHeart stroke={2} color="#CFD9FC" />
+                )}
+                {likeCount}
+              </button>
+            )}
+            <Link to={`/post/${postinfo._id}`}>
+              <button className="gap-1 text-[#CFD9FC] flex   w-fit h-8 text-center justify-center items-center">
+                <IconMessage2 stroke={2} color="#CFD9FC" /> {commentLength}
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

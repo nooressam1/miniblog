@@ -8,7 +8,7 @@ const ReturnButton = () => {
   const navigate = useNavigate();
   return (
     <button
-      className="rounded-md  w-10 h-11 bg-[#A30BA8] flex justify-center items-center"
+      className="rounded-md  w-10 h-11 bg-secondary flex justify-center items-center"
      onClick={() => navigate(-1)}
     >
 

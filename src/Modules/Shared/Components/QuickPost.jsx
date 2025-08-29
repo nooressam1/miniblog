@@ -10,7 +10,7 @@ const QuickPost = () => {
 
   const [saveDescription, setSaveDescription] = useState("");
   const backendUrl = "http://localhost:5003";
-  const { savedToken } = useAuth();
+  const { savedToken, user } = useAuth();
 
   const handlePostImage = (e) => {
     const files = Array.from(e.target.files);
@@ -30,6 +30,8 @@ const QuickPost = () => {
       savedImagesFiles.forEach((file) => {
         formData.append("postimages", file);
       });
+
+      console.log("testing user", user);
       const response = await axios.post(
         `${backendUrl}/api/post/uploadpost`,
         formData,
@@ -38,7 +40,7 @@ const QuickPost = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       console.log("Post uploaded:", response.data);
@@ -60,7 +62,7 @@ const QuickPost = () => {
       } transition-all px-4 duration-300 flex justify-center items-start`}
     >
       <div
-        className={`bg-[#20284E] w-full overflow-auto h-full transition-all duration-300 p-2 rounded-md flex ${
+        className={`bg-primarylighter w-full  overflow-none h-full transition-all duration-300 p-2 rounded-md flex ${
           focusState ? "flex-col items-start" : "flex-row items-center"
         } justify-between gap-3`}
       >
@@ -88,7 +90,7 @@ const QuickPost = () => {
                     );
                   }}
                 >
-                  <div className="p-1 m-2 w-fit rounded-full bg-[#B36ABE]">
+                  <div className="p-1 m-2 w-fit rounded-full bg-secondarylighter">
                     <IconX size={25} color="white" stroke={2} />
                   </div>
                 </button>
@@ -131,7 +133,7 @@ const QuickPost = () => {
               onClick={() => {
                 setFocusState(true);
               }}
-              className="bg-[#A30BA8] p-2 rounded-md flex justify-center items-center"
+              className="bg-secondary p-2 rounded-md flex justify-center items-center"
             >
               <IconPlus color="white" stroke={2} />
             </div>
@@ -141,7 +143,7 @@ const QuickPost = () => {
             onClick={() => {
               handleUpload();
             }}
-            className="bg-[#A30BA8] p-2 rounded-md flex justify-center items-center"
+            className="bg-secondary p-2 rounded-md flex justify-center items-center"
           >
             <IconSend2 color="white" stroke={2} />
           </button>

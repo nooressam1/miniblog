@@ -15,7 +15,7 @@ const FollowerPopUp = ({ setOpenFollowers, switchOpenFollowers, userInfo }) => {
         ? `${backendUrl}/api/account/allFollowersUsers/${userInfo._id}`
         : `${backendUrl}/api/account/allFollowingUsers/${userInfo._id}`;
 
-    const response = await axios.get(endpoint);
+    const response = await axios.get(endpoint, { withCredentials: true });
     console.log("hm following", response.data);
     return response.data;
   };
@@ -36,7 +36,8 @@ const FollowerPopUp = ({ setOpenFollowers, switchOpenFollowers, userInfo }) => {
         `${backendUrl}/api/account/removePersonalFollower/${user._id}`,
         {
           _id: userToRemove._id,
-        }
+        },      { withCredentials: true }
+
       ),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -54,7 +55,8 @@ const FollowerPopUp = ({ setOpenFollowers, switchOpenFollowers, userInfo }) => {
         `${backendUrl}/api/account/unfollowUser/${userToUnfollow.username}`,
         {
           unfollowerUsername: user.username,
-        }
+        },
+        { withCredentials: true }
       ),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -76,9 +78,9 @@ const FollowerPopUp = ({ setOpenFollowers, switchOpenFollowers, userInfo }) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-40"></div>
+      <div className="fixed inset-0 bg-background bg-opacity-50 z-40"></div>
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="bg-[#090B14]  p-7 rounded-lg w-[90vw] md:w-[60vw] max-h-[95vh] overflow-y-auto">
+        <div className="bg-background  p-7 rounded-lg w-[90vw] md:w-[60vw] max-h-[95vh] overflow-y-auto">
           <div className="flex justify-between">
             <h1 className="text-[#E3DDF7] mb-2 font-medium text-2xl">
               {switchOpenFollowers === "Followers" ? "Followers" : "Following"}

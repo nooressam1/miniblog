@@ -6,6 +6,9 @@ import { useAuth } from "../../Auth/Context/authContext";
 import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import dotImage from "../../Shared/Images/dot.png";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime.js";
+
 const CommentInfo = ({
   comment,
   repliedComment = false,
@@ -33,6 +36,18 @@ const CommentInfo = ({
     handleReplyToPost,
     handleReplyToComment,
   } = usePost();
+
+  dayjs.extend(relativeTime);
+  let timeString = dayjs(comment.createdAt).fromNow();
+  timeString = timeString
+    .replace("minutes", "Mins")
+    .replace("minute", "Min")
+    .replace("hours", "Hrs")
+    .replace("hour", "Hr")
+    .replace("seconds", "Secs")
+    .replace("second", "Sec")
+    .replace(" ago", " ago");
+
   useEffect(() => {
     if (user?._id && comment?.userId?._id) {
       setAuthenticated(user._id === comment?.userId?._id);
@@ -53,7 +68,9 @@ const CommentInfo = ({
         console.log("mutationFn called");
 
         const res = await axios.patch(
-          `${backendUrl}/api/comment/likeComments/${user._id}/like/${comment._id}`
+          `${backendUrl}/api/comment/likeComments/${user._id}/like/${comment._id}`,
+          {},
+          { withCredentials: true }
         );
         console.log("PATCH response:", res);
         return res.data; // return for React Query
@@ -111,7 +128,9 @@ const CommentInfo = ({
       <div className="h-10 w-10 mr-2">
         <img
           className="rounded-3xl cursor-pointer h-full w-full object-cover"
-          src={`http://localhost:5003${comment.userId.profilepicture}`}
+          src={  comment.userId.profilepicture.startsWith("http")
+                  ? comment.userId.profilepicture
+                  : `http://localhost:5003${comment.userId.profilepicture}`}
           alt="Pfp"
         />
       </div>
@@ -120,8 +139,8 @@ const CommentInfo = ({
           <h1 className="text-[#ffffff] cursor-pointer font-bold capitalize ">
             {comment.userId?.username}
           </h1>
-          <h5 className="text-[#e4eaff71] text-sm cursor-pointer  capitalize ">
-            {comment.createdAt}
+          <h5 className="text-[#e4eaff71] text-sm cursor-pointer   ">
+            {timeString}
           </h5>
           {authenticated && onMouse && (
             <div
@@ -139,7 +158,7 @@ const CommentInfo = ({
               {onMouseButton && (
                 <button
                   onClick={handleDelete}
-                  className="bg-[#7E96F6] absolute p-1.5 text-white rounded-md text-sm"
+                  className="bg-secondary absolute p-1.5 text-white rounded-md text-sm"
                 >
                   Delete
                 </button>

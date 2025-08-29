@@ -42,9 +42,13 @@ const PostComponent = ({ commentAction }) => {
 
   const updateLikesMutation = useMutation({
     mutationFn: () =>
-      axios.patch(`${backendUrl}/api/post/updatelikes/${postData._id}`, {
-        userId: user?._id,
-      }),
+      axios.patch(
+        `${backendUrl}/api/post/updatelikes/${postData._id}`,
+        {
+          userId: user?._id,
+        },
+        { withCredentials: true }
+      ),
     onSuccess: () => {
       setLikePost((prev) => !prev);
       fetchPostData(postID);
@@ -68,14 +72,14 @@ const PostComponent = ({ commentAction }) => {
       )}
 
       <div
-        className={`bg-[#20284E] flex flex-col ${
+        className={`bg-primary flex flex-col ${
           postData.posttype === "ImagePost"
             ? "rounded-b-md md:rounded-r-md h-full  md:rounded-l-none w-[85%] md:w-[75%] "
             : "rounded-md w-[100%] h-fit "
         }`}
       >
         <div
-          className={`bg-[#7E96F6] items-center gap-2 p-3 ${
+          className={`bg-primarylighter items-center gap-2 p-3 ${
             postData.posttype === "ImagePost"
               ? " rounded-none md:rounded-tr-md"
               : "rounded-t-md"
@@ -84,7 +88,11 @@ const PostComponent = ({ commentAction }) => {
           <div className="h-10 w-10">
             <img
               className="rounded-3xl cursor-pointer h-full w-full object-cover"
-              src={`http://localhost:5003${postData.user?.profilepicture}`}
+              src={
+                postData.user?.profilepicture.startsWith("http")
+                  ? postData.user?.profilepicture
+                  : `http://localhost:5003${postData.user?.profilepicture}`
+              }
               alt="Pfp"
             />
           </div>

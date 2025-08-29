@@ -57,7 +57,7 @@ const SignComponent = ({ ChangePage }) => {
       <h1 className="w-full text-center mb-2 font-bold text-3xl md:text-4xl text-[#CFD9FC]">
         Sign in
       </h1>
-      <h1 className="w-full text-center text-sm md:text-md text-[#B36ABE]">
+      <h1 className="w-full text-center text-sm md:text-md text-lightBlue">
         Create new account
       </h1>
       <div className="flex flex-col  w-full  px-4">
@@ -99,7 +99,7 @@ const SignComponent = ({ ChangePage }) => {
         Have an account?{" "}
         <span
           onClick={ChangePage}
-          className="text-[#B36ABE] cursor-pointer hover:underline"
+          className="text-lightBlue cursor-pointer hover:underline"
         >
           Login
         </span>

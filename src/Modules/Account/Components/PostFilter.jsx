@@ -1,62 +1,95 @@
 import React, { useEffect, useState } from "react";
+import { useAccount } from "../context/accountContext";
 
-const PostFilter = ({ setFilterOption, userAuthenticated, filterChoice }) => {
- 
+const PostFilter = ({
+  setFilterOption,
+  filterChoice,
+  options,
+  shortwidth = false,
+}) => {
+  const { userAuthenticated } = useAccount();
+
   return (
-    <div className="w-[95%] flex flex-col gap-3 mt-4">
-      <div className="flex  space-x-3">
-        <button
+    <div
+      className={`${
+        shortwidth ? "w-fit" : "w-full"
+      } p-5 flex flex-col gap-3 mt-4`}
+    >
+      <div className="flex space-x-3">
+        {options
+          .filter((opt) => opt)
+          .map((option, idx) => {
+            if (option.requiresAuth && !userAuthenticated) return null;
+
+            return (
+              <button
+                key={idx}
+                className={`rounded-md md:w-28 capitalize p-2 flex justify-center items-center ${
+                  filterChoice === option.label
+                    ? "hover:bg-secondary bg-secondary"
+                    : "bg-primarylighter"
+                }`}
+                onClick={() => setFilterOption(option.label)}
+              >
+                <h1 className="text-white font-medium text-sm md:text-base">
+                  {option.label}
+                </h1>
+              </button>
+            );
+          })}
+        {/* <button
           className={`rounded-md  md:w-28 capitalize  p-2  flex justify-center items-center ${
-            filterChoice === "All"
-              ? " hover:bg-[#a92dad] bg-[#A30BA8]"
-              : "bg-[#7E96F6]  "
+            filterChoice === option1
+              ? " hover:bg-secondary bg-secondary"
+              : "bg-primarylighter"
           }`}
-          onClick={() => setFilterOption("All")}
+          onClick={() => setFilterOption(option1)}
         >
           <h1 className="text-white   font-medium text-sm md:text-base ">
-            All
+            {option1}
           </h1>
         </button>{" "}
         <button
           className={`rounded-md  md:w-28 capitalize  p-2  flex justify-center items-center ${
-            filterChoice === "ImagePost"
-              ? " hover:bg-[#a92dad] bg-[#A30BA8]"
-              : "bg-[#7E96F6]  "
+            filterChoice === option2
+              ? " hover:bg-secondary bg-secondary"
+              : "bg-primarylighter"
           }`}
-          onClick={() => setFilterOption("ImagePost")}
+          onClick={() => setFilterOption(option2)}
         >
           <h1 className="text-white   font-medium text-sm md:text-base ">
-            Images
+            {option2}
           </h1>
         </button>
-        <button
-          className={`rounded-md  md:w-28 capitalize  p-2  flex justify-center items-center ${
-            filterChoice === "textPost"
-              ? " hover:bg-[#a92dad] bg-[#A30BA8]"
-              : "bg-[#7E96F6]  "
-          }`}
-          onClick={() => setFilterOption("textPost")}
-        >
-          <h1 className="text-white   font-medium text-sm md:text-base ">
-            Pages
-          </h1>
-        </button>
-        {userAuthenticated === true && (
+        {option3 && (
           <button
             className={`rounded-md  md:w-28 capitalize  p-2  flex justify-center items-center ${
-              filterChoice === "Liked"
-                ? " hover:bg-[#a92dad] bg-[#A30BA8]"
-                : "bg-[#7E96F6]  "
+              filterChoice === option3
+                ? " hover:bg-secondary bg-secondary"
+                : "bg-primarylighter"
             }`}
-            onClick={() => setFilterOption("Liked")}
+            onClick={() => setFilterOption(option3)}
           >
             <h1 className="text-white   font-medium text-sm md:text-base ">
-              Liked
+              {option3}
             </h1>
           </button>
         )}
+        {userAuthenticated === true && (
+          <button
+            className={`rounded-md  md:w-28 capitalize  p-2  flex justify-center items-center ${
+              filterChoice === option4
+                ? " hover:bg-secondary bg-secondary"
+                : "bg-primarylighter"
+            }`}
+            onClick={() => setFilterOption(option4)}
+          >
+            <h1 className="text-white   font-medium text-sm md:text-base ">
+              {option4}
+            </h1>
+          </button>
+        )} */}
       </div>
-      <div className="w-full bg-[#373c50]  h-[0.5px]"></div>
     </div>
   );
 };

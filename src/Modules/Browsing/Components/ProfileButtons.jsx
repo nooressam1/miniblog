@@ -3,9 +3,9 @@ import EditInfo from "../../Account/Components/EditInfo";
 import { useAuth } from "../../Auth/Context/authContext";
 import axios from "axios";
 import { useAccount } from "../../Account/context/accountContext";
+import { useNavigate } from "react-router-dom";
 
 const ProfileButtons = ({
-  userAuthenticated,
   setOpenEditInfo,
   setOpenFollowers,
   setSwitchOpenFollowers,
@@ -14,7 +14,7 @@ const ProfileButtons = ({
   const [followerCount, setFollowerCount] = useState(null);
   const [followingCount, setFollowingCount] = useState(null);
   const { user, logout } = useAuth();
-  const { fetchUser, userInfo } = useAccount();
+  const { fetchUser, userInfo, userAuthenticated } = useAccount();
 
   const backendUrl = "http://localhost:5003";
 
@@ -34,7 +34,9 @@ const ProfileButtons = ({
       if (followingAccount) {
         const response = await axios.put(
           `${backendUrl}/api/account/unfollowUser/${userInfo.username}`, // the opened users account
-          { unfollowerUsername: user.username } // current user
+          { unfollowerUsername: user.username },
+          { withCredentials: true }
+          // current user
         );
         await fetchUser(userInfo.username);
         setFollowerCount(userInfo?.followers?.length || 0);
@@ -45,7 +47,8 @@ const ProfileButtons = ({
       } else {
         const response = await axios.put(
           `${backendUrl}/api/account/followUser/${userInfo.username}`,
-          { followerUsername: user.username }
+          { followerUsername: user.username },
+          { withCredentials: true }
         );
         await fetchUser(userInfo.username);
         setFollowerCount(userInfo?.followers?.length || 0);
@@ -66,7 +69,7 @@ const ProfileButtons = ({
           <div className="text-white capitalize text-3xl font-medium">
             {userInfo.username}
           </div>
-          <div className="flex md:justify-center gap-4 items-center">
+          <div className="flex md:justify-center gap-4 flex-wrap  items-center">
             <h1
               className="text-white cursor-pointer text-md font-sm w-fit whitespace-nowrap"
               onClick={() => {
@@ -86,9 +89,9 @@ const ProfileButtons = ({
               {followingCount} Following
             </h1>
             {userAuthenticated ? (
-              <>
+              <div className="flex gap-4">
                 <button
-                  className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
+                  className="rounded-md md:w-28 capitalize p-2 hover:bg-secondarylighter bg-secondary flex justify-center items-center"
                   onClick={() => setOpenEditInfo((prev) => !prev)}
                 >
                   <h1 className="text-white font-medium text-sm md:text-base">
@@ -96,26 +99,26 @@ const ProfileButtons = ({
                   </h1>
                 </button>
                 <button
-                  className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
+                  className="rounded-md md:w-28 capitalize p-2 hover:bg-secondarylighter bg-secondary flex justify-center items-center"
                   onClick={() => logout()}
                 >
                   <h1 className="text-white font-medium text-sm md:text-base">
                     logout
                   </h1>
                 </button>
-              </>
+              </div>
             ) : (
               <>
-                <button
+                {/* <button
                   className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
                   onClick={() => ""}
                 >
                   <h1 className="text-white font-medium text-sm md:text-base">
                     Chat
                   </h1>
-                </button>
+                </button> */}
                 <button
-                  className="rounded-md md:w-28 capitalize p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
+                  className="rounded-md md:w-28 capitalize p-2 hover:bg-secondarylighter bg-secondary flex justify-center items-center"
                   onClick={() => HandleUserfollowing()}
                 >
                   <h1 className="text-white font-medium text-sm md:text-base">

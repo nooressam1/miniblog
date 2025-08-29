@@ -77,7 +77,7 @@ const ReplyingComment = ({
               buttonAction();
               createComment();
             }}
-            className="bg-[#B36ABE] hover:bg-[#da85e7] rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
+            className=" rounded-xl p-1 flex w-9 h-8 text-center justify-center items-center"
           >
             <IconSend2 stroke={2} color="white" />
           </button>

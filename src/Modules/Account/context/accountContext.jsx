@@ -1,12 +1,13 @@
 import axios from "axios";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "../../Auth/Context/authContext";
 
 const AccountContext = createContext();
 
 export function AccountProvider({ children }) {
-  const { backendUrl } = useAuth();
+  const { backendUrl, user } = useAuth();
   const [userInfo, setUserInfo] = useState(null);
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
 
   const fetchUser = async (username) => {
     try {
@@ -17,9 +18,17 @@ export function AccountProvider({ children }) {
       return null;
     }
   };
+  useEffect(() => {
+    if (userInfo && user && user.username === userInfo.username) {
+      setUserAuthenticated(true);
+    } else {
+      setUserAuthenticated(false);
+    }
+  }, [userInfo, user]);
+  
 
   return (
-    <AccountContext.Provider value={{ fetchUser ,userInfo}}>
+    <AccountContext.Provider value={{ fetchUser, userInfo, userAuthenticated }}>
       {children}
     </AccountContext.Provider>
   );

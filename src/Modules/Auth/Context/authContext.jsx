@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Navigate, replace, useNavigate } from "react-router";
 
 const AuthContext = createContext();
 
@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
   const [savedToken, setToken] = useState(null);
   const backendUrl = "http://localhost:5003";
   const [accessToken, setAccessToken] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getNewAccessToken = async () => {
@@ -23,10 +24,11 @@ export function AuthProvider({ children }) {
       } catch (err) {
         console.log("Refresh failed", err);
         logout(); // Optional
+      } finally {
+        setLoading(false); // done loading at this point
       }
     };
     getNewAccessToken();
-    setLoading(false); // done loading at this point
   }, []);
 
   const logout = () => {
@@ -41,7 +43,7 @@ export function AuthProvider({ children }) {
         setUser(null);
         setToken(null);
         setAccessToken(null);
-
+        navigate("/login", { replace: true });
         setLoading(false);
       });
   };
@@ -57,7 +59,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{ user, login, logout, loading, savedToken, backendUrl }}
     >
-      {children}
+      {loading ? <p>Loading...</p> : children}
     </AuthContext.Provider>
   );
 }

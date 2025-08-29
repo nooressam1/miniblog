@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAccount } from "../context/accountContext";
 
 const AccountBox = ({ User, operation }) => {
-  useEffect(() => {
-    console.log(`http://localhost:5003${User.profilepicture}`);
-  }, []);
+  const { userAuthenticated } = useAccount();
+
   return (
     <div className="flex w-[95%] mb-2 justify-between  items-center">
       <div className="flex items-center gap-4">
@@ -23,14 +23,16 @@ const AccountBox = ({ User, operation }) => {
         </Link>
       </div>
 
-      <button
-        className="rounded-md   p-2 hover:bg-[#a92dad] bg-[#A30BA8] flex justify-center items-center"
-        onClick={() => operation(User.username)}
-      >
-        <h1 className="text-white font-medium text-sm md:text-sm">
-          Remove follower
-        </h1>
-      </button>
+      {userAuthenticated && (
+        <button
+          className="rounded-md   p-2 hover:bg-secondarylighter bg-secondary flex justify-center items-center"
+          onClick={() => operation(User.username)}
+        >
+          <h1 className="text-white font-medium text-sm md:text-sm">
+            Remove follower
+          </h1>
+        </button>
+      )}
     </div>
   );
 };

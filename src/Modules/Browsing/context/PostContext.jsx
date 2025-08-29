@@ -35,7 +35,7 @@ export function PostProvider({ children }) {
     SetReplyingParentCommentId(commentId);
     setRepliedtoName(commenterName);
   };
-  
+
   const FetchComments = async (postid, allcomments) => {
     try {
       if (!postid) return;
@@ -44,7 +44,7 @@ export function PostProvider({ children }) {
         `${backendUrl}/api/comment/fetchComments/${postid}`,
         { params: { getAll: allcomments } }
       );
-      console.log("testingcomments")
+      console.log("testingcomments");
       setCommentsData(res.data);
     } catch (err) {
       console.log("failed to get comments", err);

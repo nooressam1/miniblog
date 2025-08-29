@@ -7,7 +7,7 @@ const BlueButton = ({ title, Operation }) => {
         onClick={() => {
           Operation()
         }}
-        className="w-[65%] h-fit font-bold hover:bg-[#8ca1f6] text-xl text-white p-3 rounded-md bg-[#7E96F6]"
+        className="w-[65%] h-fit font-bold hover:bg-secondarylighter text-xl text-white p-3 rounded-md bg-secondary"
       >
         {title}
       </button>

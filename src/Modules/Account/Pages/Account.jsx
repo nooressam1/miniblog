@@ -22,9 +22,8 @@ const breakpointColumnsObj = {
 
 const Account = ({ UserName }) => {
   const { user, backendUrl } = useAuth();
-  const { fetchUser, userInfo } = useAccount();
+  const { fetchUser, userInfo, userAuthenticated } = useAccount();
 
-  const [userAuthenticated, setUserAuthenticated] = useState(false);
   const [openEditInfo, setOpenEditInfo] = useState(false);
   const [openFollowers, setOpenFollowers] = useState(false);
   const [switchOpenFollowers, setSwitchOpenFollowers] = useState("Followers");
@@ -66,14 +65,6 @@ const Account = ({ UserName }) => {
     fetchUser(decodedUsername);
   }, [decodedUsername]);
 
-  useEffect(() => {
-    if (userInfo && user && user.username === userInfo.username) {
-      setUserAuthenticated(true);
-    } else {
-      setUserAuthenticated(false);
-    }
-  }, [userInfo, user]);
-
   const {
     data: Posts = [],
     isLoading: isPostsLoading,
@@ -93,35 +84,47 @@ const Account = ({ UserName }) => {
         <img
           className="w-full h-full object-cover"
           alt="Banner"
-          src={`http://localhost:5003${userInfo.banner}`}
+          src={
+            user.banner.startsWith("http")
+              ? user.banner
+              : `http://localhost:5003${user.banner}`
+          }
         />
       </div>
 
-      <div className="w-full min-h-[23vh] max-h-[28vh] bg-[#20284E] flex items-center">
+      <div className="w-full min-h-[23vh] max-h-[28vh] bg-primarylighter flex items-center">
         <div className="w-full p-5 h-full flex flex-col md:flex-row">
-          <div className="w-40 h-52 md:w-56 md:h-48 rounded-lg md:-mt-24 -mt-40">
+          <div className="w-52 h-52 md:w-60 md:h-52 md:-mt-24 -mt-40 relative">
             <img
               className="w-full h-full object-cover rounded-full  object-center"
               alt="pfp"
-              src={`http://localhost:5003${userInfo.profilepicture}`}
+              src={
+                user.profilepicture.startsWith("http")
+                  ? user.profilepicture
+                  : `http://localhost:5003${user.profilepicture}`
+              }
             />
           </div>
 
           <ProfileButtons
             setOpenFollowers={setOpenFollowers}
             setOpenEditInfo={setOpenEditInfo}
-            userAuthenticated={userAuthenticated}
             setSwitchOpenFollowers={setSwitchOpenFollowers}
           ></ProfileButtons>
         </div>
       </div>
 
-      <div className="w-full flex flex-col mt-5  items-center">
+      <div className="w-full flex flex-col mt-5 md:p-0 p-3 items-center">
         {userAuthenticated && <QuickPost />}
         <PostFilter
           setFilterOption={setFilterChoice}
-          userAuthenticated={userAuthenticated}
           filterChoice={filterChoice}
+          options={[
+            { label: "All" },
+            { label: "Images" },
+            { label: "textPost" },
+            { label: "Liked", requiresAuth: true },
+          ]}
         />
         {isPostsLoading && (
           <div className="text-gray-400 mt-4">Loading posts...</div>
@@ -137,7 +140,7 @@ const Account = ({ UserName }) => {
         )}
         <Masonry
           breakpointCols={breakpointColumnsObj}
-          className="flex w-full gap-8 p-8"
+          className="flex w-full gap-8 p-2 px-5"
           columnClassName="space-y-8"
         >
           {Posts.map((post) => (
